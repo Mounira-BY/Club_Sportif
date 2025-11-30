@@ -1,0 +1,141 @@
+.landing {
+    background: url(/imgs/gigafit\ clubs.webp);
+    min-height: 100vh;
+}
+
+.head {
+    color: red;
+    font-size: 20px;
+
+
+}
+
+
+.para {
+    width: 700px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: auto;
+    color: rgb(212, 212, 205);
+}
+
+.quote-container {
+    max-width: 600px;
+
+    margin: 0 auto;
+
+
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.quote {
+    font-family: Georgia, serif;
+
+    font-size: 24px;
+
+    font-style: italic;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.quote::before,
+.quote::after {
+    content: " '' ";
+}
+
+.author {
+    margin-top: 20px;
+    font-size: 18px;
+
+    font-style: normal;
+    text-align: right;
+}
+
+
+body {
+    background-color: black;
+    overflow-x: hidden;
+}
+
+h1 {
+    color: red;
+    font-family: "galada";
+
+}
+
+
+
+
+
+.navbar {
+    background-color: black;
+    height: 90px;
+    display: flex;
+
+
+
+}
+
+.title {
+    font-family: cursive;
+
+
+
+}
+
+
+
+.icons {
+
+    position: absolute;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.icon {
+    height: 60px
+}
+
+
+
+.box {
+    padding: 5px;
+    overflow: hidden;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
+.box::before {
+    content: attr(data-work);
+    position: absolute;
+    background-color: rgb(51 209 204 /76%);
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    transition: 0.3s;
+    transform: translateX(calc(-100% - 5px));
+}
+
+.box:hover::before {
+    transform: translateX(0);
+}
+
+@media screen and (max-width=800px) {
+
+    .landing,
+    .main-div {
+        width: fit-content;
+    }
+
+}
