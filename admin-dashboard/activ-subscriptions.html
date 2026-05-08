@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="Smart GYM - Abonnements Actifs" />
+    <meta name="author" content="Smart GYM" />
+    <meta name="keywords" content="gym, fitness, abonnements" />
+
+    <title>Smart GYM - Abonnements Actifs</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="css/font-face.css" rel="stylesheet" media="all" />
+    <link
+      href="vendor/fontawesome-7.1.0/css/all.min.css"
+      rel="stylesheet"
+      media="all"
+    />
+    <link
+      href="vendor/mdi-font/css/material-design-iconic-font.min.css"
+      rel="stylesheet"
+      media="all"
+    />
+
+    <!-- Bootstrap CSS-->
+    <link href="vendor/bootstrap-5.3.8.min.css" rel="stylesheet" media="all" />
+
+    <!-- Vendor CSS-->
+    <link href="css/aos.css" rel="stylesheet" media="all" />
+    <link
+      href="vendor/css-hamburgers/hamburgers.min.css"
+      rel="stylesheet"
+      media="all"
+    />
+    <link
+      href="css/swiper-bundle-12.0.3.min.css"
+      rel="stylesheet"
+      media="all"
+    />
+    <link
+      href="vendor/perfect-scrollbar/perfect-scrollbar-1.5.6.css"
+      rel="stylesheet"
+      media="all"
+    />
+
+    <!-- DataTables CSS - CDN POUR ÊTRE SÛR -->
+    <link
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Main CSS-->
+    <link href="css/theme.css" rel="stylesheet" media="all" />
+
+    <style>
+      /* Status Badges */
+      .badge-status {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .badge-paye {
+        background-color: #1cc88a;
+        color: white;
+      }
+
+      .badge-partiel {
+        background-color: #f6c23e;
+        color: white;
+      }
+
+      .badge-impaye {
+        background-color: #e74a3b;
+        color: white;
+      }
+
+      /* Table responsive improvements */
+      .table-responsive {
+        overflow-x: auto;
+      }
+
+      .table {
+        font-size: 14px;
+      }
+
+      .table thead th {
+        background-color: #f8f9fc;
+        color: #4e73df;
+        font-weight: 600;
+        border-bottom: 2px solid #e3e6f0;
+      }
+
+      .table tbody tr:hover {
+        background-color: #f8f9fc;
+      }
+
+      /* Card styling */
+      .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+      }
+
+      .card-header {
+        background-color: #f8f9fc;
+        border-bottom: 1px solid #e3e6f0;
+        padding: 15px 20px;
+      }
+
+      .card-header h6 {
+        color: #4e73df;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      /* Action buttons */
+      .table-data__tool {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .table-data__tool-left h3 {
+        font-size: 20px;
+        color: #5a5c69;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .table-data__tool-right {
+        display: flex;
+        gap: 10px;
+      }
+
+      .au-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .au-btn--green {
+        background-color: #1cc88a;
+        color: white;
+      }
+
+      .au-btn--green:hover {
+        background-color: #17a673;
+      }
+
+      .au-btn--blue {
+        background-color: #4e73df;
+        color: white;
+      }
+
+      .au-btn--blue:hover {
+        background-color: #2e59d9;
+      }
+
+      /* DataTables wrapper styling */
+      .dataTables_wrapper .dataTables_length select,
+      .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #d1d3e2;
+        border-radius: 5px;
+        padding: 5px 10px;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        .table-data__tool {
+          flex-direction: column;
+          gap: 15px;
+          align-items: flex-start;
+        }
+
+        .table-data__tool-right {
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .au-btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+
+    <style>
+  .logo img {
+    padding-left: 50px; 
+    max-width: 150px;
+    max-height: 70px;
+    object-fit: contain;
+  }
+</style>
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- HEADER MOBILE-->
+      <header class="header-mobile d-block d-lg-none">
+        <div class="header-mobile__bar">
+          <div class="container-fluid">
+            <div class="header-mobile-inner">
+              <a class="logo" href="index.html">
+                <img src="images/icon/logo-fitness-center.png" alt="Smart GYM" />
+              </a>
+              <button class="hamburger hamburger--slider" type="button">
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <nav class="navbar-mobile">
+          <div class="container-fluid">
+            <ul class="navbar-mobile__list list-unstyled">
+              <li>
+                <a href="index1.html">
+                  <i class="fas fa-tachometer-alt"></i>Tableau de Bord</a
+                >
+              </li>
+              <li>
+                <a href="membres.html"> <i class="fas fa-users"></i>Abonnés</a>
+              </li>
+              <li class="active">
+                <a href="activ-subscriptions.html">
+                  <i class="fas fa-id-card"></i>Abonnements</a
+                >
+              </li>
+              <li>
+                <a href="reservations.html">
+                  <i class="fas fa-calendar-check"></i>Réservations</a
+                >
+              </li>
+              <li>
+                <a href="paiements.html">
+                  <i class="fas fa-credit-card"></i>Paiements</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- END HEADER MOBILE-->
+
+      <!-- MENU SIDEBAR-->
+      <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+          <a href="index.html">
+            <img src="images/icon/logo-fitness-center.png" alt="Smart GYM" />
+          </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+          <nav class="navbar-sidebar">
+            <ul class="list-unstyled navbar__list">
+              <li>
+                <a href="index1.html">
+                  <i class="fas fa-tachometer-alt"></i>Tableau de Bord</a
+                >
+              </li>
+              <li>
+                <a href="membres.html"> <i class="fas fa-users"></i>Abonnés</a>
+              </li>
+              <li class="active">
+                <a href="activ-subscriptions.html">
+                  <i class="fas fa-id-card"></i>Abonnements</a
+                >
+              </li>
+              <li>
+                <a href="reservations.html">
+                  <i class="fas fa-calendar-check"></i>Réservations</a
+                >
+              </li>
+              <li>
+                <a href="paiements.html">
+                  <i class="fas fa-credit-card"></i>Paiements</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      <!-- END MENU SIDEBAR-->
+
+      <!-- PAGE CONTAINER-->
+      <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+          <div class="section__content section__content--p30">
+            <div class="container-fluid">
+              <div class="header-wrap">
+                <form class="form-header" action="" method="POST">
+                  <input
+                    id="searchAbonnement"
+                    class="au-input au-input--xl"
+                    type="text"
+                    name="search"
+                    placeholder="Rechercher un abonnement..."
+                  />
+                  <button class="au-btn--submit" type="submit">
+                    <i class="zmdi zmdi-search"></i>
+                  </button>
+                </form>
+                <div class="header-button">
+                  <div class="noti-wrap">
+                    <div class="noti__item js-item-menu">
+                      <i class="zmdi zmdi-notifications"></i>
+                      <span class="quantity">5</span>
+                      <div class="notifi-dropdown js-dropdown">
+                        <div class="notifi__title">
+                          <p>Vous avez 5 Notifications</p>
+                        </div>
+                        <div class="notifi__item">
+                          <div class="bg-c1 img-cir img-40">
+                            <i class="zmdi zmdi-alert-triangle"></i>
+                          </div>
+                          <div class="content">
+                            <p>12 abonnements expirent dans 7 jours</p>
+                            <span class="date">15 Déc 2024</span>
+                          </div>
+                        </div>
+                        <div class="notifi__item">
+                          <div class="bg-c2 img-cir img-40">
+                            <i class="zmdi zmdi-close-circle"></i>
+                          </div>
+                          <div class="content">
+                            <p>5 abonnements ont expiré aujourd'hui</p>
+                            <span class="date">14 Déc 2024</span>
+                          </div>
+                        </div>
+                        <div class="notifi__item">
+                          <div class="bg-c3 img-cir img-40">
+                            <i class="zmdi zmdi-calendar"></i>
+                          </div>
+                          <div class="content">
+                            <p>Terrain Padel réservé à 18h00</p>
+                            <span class="date">13 Déc 2024</span>
+                          </div>
+                        </div>
+                        <div class="notifi__footer">
+                          <a href="#">Toutes les notifications</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="account-wrap">
+                    <div class="account-item clearfix js-item-menu">
+                      <div class="image">
+                        <img src="images/icon/avatar-01.jpg" alt="Admin" />
+                      </div>
+                      <div class="content">
+                        <a class="js-acc-btn" href="#">Admin Smart GYM</a>
+                      </div>
+                      <div class="account-dropdown js-dropdown">
+                        <div class="info clearfix">
+                          <div class="image">
+                            <a href="#">
+                              <img
+                                src="images/icon/avatar-01.jpg"
+                                alt="Admin"
+                              />
+                            </a>
+                          </div>
+                          <div class="content">
+                            <h5 class="name">
+                              <a href="#">Admin Smart GYM</a>
+                            </h5>
+                            <span class="email">admin@smartgym.tn</span>
+                          </div>
+                        </div>
+                        <div class="account-dropdown__body">
+                          <div class="account-dropdown__item">
+                            <a href="#">
+                              <i class="zmdi zmdi-account"></i>Profil</a
+                            >
+                          </div>
+                          <div class="account-dropdown__item">
+                            <a href="#">
+                              <i class="zmdi zmdi-settings"></i>Paramètres</a
+                            >
+                          </div>
+                        </div>
+                        <div class="account-dropdown__footer">
+                          <a href="#">
+                            <i class="zmdi zmdi-power"></i>Déconnexion</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- END HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+          <div class="section__content section__content--p30">
+            <div class="container-fluid">
+              <!-- Filter and Actions -->
+              <div class="table-data__tool">
+                <div class="table-data__tool-left">
+                  <h3 class="title-5">Abonnements Actifs</h3>
+                </div>
+                <div class="table-data__tool-right">
+                  <button
+                    id="btnExport"
+                    class="au-btn au-btn-icon au-btn--green"
+                  >
+                    <i class="zmdi zmdi-download"></i>Exporter
+                  </button>
+                  <button
+                    class="au-btn au-btn-icon au-btn--blue"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAbonnement"
+                  >
+                    <i class="zmdi zmdi-plus"></i>Nouvel Abonnement
+                  </button>
+                </div>
+              </div>
+
+              <!-- DataTables -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    Liste des Abonnements Actifs
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered table-hover"
+                      id="dataTable"
+                      width="100%"
+                      cellspacing="0"
+                    >
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Abonné</th>
+                          <th>Type</th>
+                          <th>Date Début</th>
+                          <th>Date Fin</th>
+                          <th>Montant</th>
+                          <th>Statut</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>ID</th>
+                          <th>Abonné</th>
+                          <th>Type</th>
+                          <th>Date Début</th>
+                          <th>Date Fin</th>
+                          <th>Montant</th>
+                          <th>Statut</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        <tr>
+                          <td>#001</td>
+                          <td>Ahmed Ben Ali</td>
+                          <td>Gym Mensuel</td>
+                          <td>01/12/2024</td>
+                          <td>01/01/2025</td>
+                          <td>180 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#002</td>
+                          <td>Fatma Trabelsi</td>
+                          <td>Coaching Groupe 2</td>
+                          <td>15/11/2024</td>
+                          <td>15/02/2025</td>
+                          <td>400 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#003</td>
+                          <td>Mohamed Jebali</td>
+                          <td>Gym Annuel</td>
+                          <td>05/09/2024</td>
+                          <td>05/09/2025</td>
+                          <td>1300 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#004</td>
+                          <td>Nour Hamdi</td>
+                          <td>Kids Trimestriel</td>
+                          <td>20/10/2024</td>
+                          <td>20/01/2025</td>
+                          <td>350 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#005</td>
+                          <td>Slim Gharbi</td>
+                          <td>Padel Pack 5</td>
+                          <td>12/11/2024</td>
+                          <td>12/02/2025</td>
+                          <td>450 DT</td>
+                          <td>
+                            <span class="badge-status badge-partiel"
+                              >Partiel</span
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#006</td>
+                          <td>Karim Mejri</td>
+                          <td>Coaching Individuel</td>
+                          <td>28/09/2024</td>
+                          <td>28/12/2024</td>
+                          <td>250 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#007</td>
+                          <td>Yasmine Khaled</td>
+                          <td>Gym Semestriel</td>
+                          <td>10/07/2024</td>
+                          <td>10/01/2025</td>
+                          <td>750 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#008</td>
+                          <td>Mehdi Bouazizi</td>
+                          <td>Basketball Pack 10</td>
+                          <td>18/11/2024</td>
+                          <td>18/02/2025</td>
+                          <td>500 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#009</td>
+                          <td>Sara Miled</td>
+                          <td>Coaching Groupe 3</td>
+                          <td>05/10/2024</td>
+                          <td>05/01/2025</td>
+                          <td>480 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#010</td>
+                          <td>Rami Sassi</td>
+                          <td>Gym Trimestriel</td>
+                          <td>22/10/2024</td>
+                          <td>22/01/2025</td>
+                          <td>450 DT</td>
+                          <td>
+                            <span class="badge-status badge-impaye"
+                              >Impayé</span
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#011</td>
+                          <td>Leila Mansour</td>
+                          <td>Kids Mensuel</td>
+                          <td>30/11/2024</td>
+                          <td>30/12/2024</td>
+                          <td>150 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#012</td>
+                          <td>Anis Zouari</td>
+                          <td>Accès Libre Adulte</td>
+                          <td>10/11/2024</td>
+                          <td>10/02/2025</td>
+                          <td>300 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#013</td>
+                          <td>Sami Ferchichi</td>
+                          <td>Gym Mensuel</td>
+                          <td>15/11/2024</td>
+                          <td>15/12/2024</td>
+                          <td>180 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#014</td>
+                          <td>Hana Chaabane</td>
+                          <td>Coaching Groupe 4</td>
+                          <td>08/10/2024</td>
+                          <td>08/01/2025</td>
+                          <td>560 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#015</td>
+                          <td>Walid Elloumi</td>
+                          <td>Padel Pack 10</td>
+                          <td>20/10/2024</td>
+                          <td>20/01/2025</td>
+                          <td>900 DT</td>
+                          <td>
+                            <span class="badge-status badge-partiel"
+                              >Partiel</span
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#016</td>
+                          <td>Ines Ben Salah</td>
+                          <td>Gym Mensuel</td>
+                          <td>05/12/2024</td>
+                          <td>05/01/2025</td>
+                          <td>180 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#017</td>
+                          <td>Omar Khlifi</td>
+                          <td>Gym Trimestriel</td>
+                          <td>01/10/2024</td>
+                          <td>01/01/2025</td>
+                          <td>450 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#018</td>
+                          <td>Amira Toumi</td>
+                          <td>Kids Trimestriel</td>
+                          <td>12/09/2024</td>
+                          <td>12/12/2024</td>
+                          <td>350 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#019</td>
+                          <td>Bilel Ghribi</td>
+                          <td>Basketball Pack 5</td>
+                          <td>25/11/2024</td>
+                          <td>25/02/2025</td>
+                          <td>450 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#020</td>
+                          <td>Mariem Jlassi</td>
+                          <td>Gym Annuel</td>
+                          <td>15/01/2024</td>
+                          <td>15/01/2025</td>
+                          <td>1300 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#021</td>
+                          <td>Houssem Dridi</td>
+                          <td>Coaching Individuel</td>
+                          <td>10/11/2024</td>
+                          <td>10/02/2025</td>
+                          <td>250 DT</td>
+                          <td>
+                            <span class="badge-status badge-partiel"
+                              >Partiel</span
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#022</td>
+                          <td>Sarra Bouaziz</td>
+                          <td>Gym Semestriel</td>
+                          <td>20/07/2024</td>
+                          <td>20/01/2025</td>
+                          <td>750 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#023</td>
+                          <td>Fares Monastiri</td>
+                          <td>Padel Pack 10</td>
+                          <td>03/11/2024</td>
+                          <td>03/02/2025</td>
+                          <td>900 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#024</td>
+                          <td>Donia Ghariani</td>
+                          <td>Kids Mensuel</td>
+                          <td>28/11/2024</td>
+                          <td>28/12/2024</td>
+                          <td>150 DT</td>
+                          <td>
+                            <span class="badge-status badge-paye">Payé</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>#025</td>
+                          <td>Aymen Saidi</td>
+                          <td>Gym Mensuel</td>
+                          <td>08/12/2024</td>
+                          <td>08/01/2025</td>
+                          <td>180 DT</td>
+                          <td>
+                            <span class="badge-status badge-impaye"
+                              >Impayé</span
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="copyright">
+                    <p>Copyright © 2024 Smart GYM. Tous droits réservés.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END MAIN CONTENT-->
+      </div>
+      <!-- END PAGE CONTAINER-->
+    </div>
+
+    <!-- jQuery - CHARGER EN PREMIER AVEC CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Bootstrap JS-->
+    <script src="vendor/bootstrap-5.3.8.bundle.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar-1.5.6.min.js"></script>
+
+    <!-- DataTables JS - UTILISER CDN -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/bootstrap5-init.js"></script>
+    <script src="js/main-vanilla.js"></script>
+    <script src="js/swiper-bundle-12.0.3.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/modern-plugins.js"></script>
+
+    <!-- Initialize DataTable - DOIT ÊTRE APRÈS TOUS LES AUTRES SCRIPTS -->
+    <script>
+      // Attendre que TOUT soit chargé
+      $(document).ready(function () {
+        console.log("jQuery version:", $.fn.jquery);
+        console.log("DataTable disponible?", typeof $.fn.DataTable);
+
+        // Initialize DataTable with French localization
+        var table = $("#dataTable").DataTable({
+          language: {
+            lengthMenu: "Afficher _MENU_ entrées",
+            zeroRecords: "Aucun résultat trouvé",
+            info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+            infoEmpty: "Affichage de 0 à 0 sur 0 entrées",
+            infoFiltered: "(filtré de _MAX_ entrées au total)",
+            search: "Rechercher:",
+            paginate: {
+              first: "Premier",
+              last: "Dernier",
+              next: "Suivant",
+              previous: "Précédent",
+            },
+            loadingRecords: "Chargement...",
+            processing: "Traitement...",
+            emptyTable: "Aucune donnée disponible",
+            aria: {
+              sortAscending:
+                ": activer pour trier la colonne par ordre croissant",
+              sortDescending:
+                ": activer pour trier la colonne par ordre décroissant",
+            },
+          },
+          pageLength: 10,
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "Tous"],
+          ],
+          ordering: true,
+          searching: true,
+          paging: true,
+          info: true,
+          responsive: true,
+          autoWidth: false,
+          order: [[0, "asc"]],
+        });
+
+        console.log("DataTable initialized!", table);
+      });
+    </script>
+
+    <!--SCRIPT DE EXPORT-->
+    <script>
+      $("#btnExport").on("click", function () {
+        let csv = "";
+        $("#dataTable tr").each(function () {
+          let row = [];
+          $(this)
+            .find("th, td")
+            .each(function () {
+              row.push('"' + $(this).text().trim() + '"');
+            });
+          csv += row.join(",") + "\n";
+        });
+
+        let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "abonnements-actifs.csv";
+        link.click();
+      });
+    </script>
+
+    <!--MODEL DU NOUVEL ABONNEMENT-->
+    <div class="modal fade" id="modalAbonnement" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nouvel Abonnement</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label>Abonné</label>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label>Type</label>
+                  <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label>Date début</label>
+                  <input type="date" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label>Date fin</label>
+                  <input type="date" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label>Montant</label>
+                  <input type="number" class="form-control" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Annuler
+            </button>
+            <button class="btn btn-primary">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--SCRIPT DE RECHERCHE D'ABONNEMENT DANS LE HEADER-->
+    <script>
+      $("#searchAbonnement").on("keyup", function () {
+        $("#dataTable").DataTable().search(this.value).draw();
+      });
+    </script>
+  </body>
+</html>

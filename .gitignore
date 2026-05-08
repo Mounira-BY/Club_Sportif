@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vendor (if using composer later)
+vendor/
+
+# Cache
+.cache/
+
+# Build files
+dist/
+build/
