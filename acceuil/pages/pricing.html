@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Agency - Start Bootstrap Theme</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link href="../css/monserrat.css" rel="stylesheet" type="text/css" />
+    <link href="../css/robottoslab.css" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" />
+    <script src="../js/all.js" crossorigin="anonymous"></script>
+    <script src="../js/abonnements-manager.js"></script>
+</head>
+
+<body id="page-top">
+
+    <div id="navbar-placeholder"></div>
+
+    <header class="masthead pricing sample-page">
+        <div class="container">
+            <div class="masthead-subheading">Abonnements</div>
+        </div>
+    </header>
+
+    <section class="page-section">
+
+        <div class="container">
+
+            <div id="gym" class="table">
+                <h2 class="heading text-center">
+                    <i class="fas fa-dumbbell"></i>Gym
+                </h2>
+                <div id="gym-abonnements" class="abonnements-container">
+                    <!-- Chargé dynamiquement -->
+                </div>
+                <button class="btn" style="display: flex;">
+                    <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
+                    <span class="fas fa-cart-plus" aria-hidden="true"
+                        style="position: relative;top: 12px;padding-left: 16px;"></span>
+                </button>
+            </div>
+
+            <div id="private" class="table">
+                <h2 class="heading text-center">
+                    <i class="fas fa-lock"></i>Coaching Privée
+                </h2>
+                <div id="coaching-abonnements" class="abonnements-container">
+                    <!-- Chargé dynamiquement -->
+                </div>
+                <button class="btn" style="display: flex;">
+                    <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
+                    <span class="fa fa-cart-plus" aria-hidden="true"
+                        style="position: relative;top: 12px;padding-left: 16px;"></span>
+                </button>
+            </div>
+
+            <div id="passenger" class="table">
+                <h2 class="heading text-center">
+                    <i class="fas fa-person-walking-arrow-right"></i>Accés Libre
+                </h2>
+                <div id="acces-abonnements" class="abonnements-container">
+                    <!-- Chargé dynamiquement -->
+                </div>
+                <button class="btn" style="display: flex;">
+                    <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
+                    <span class="fa fa-cart-plus" aria-hidden="true"
+                        style="position: relative;top: 12px;padding-left: 16px;"></span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="container">
+
+            <div id="padel" class="table">
+                <h2 class="heading text-center">
+                    <i class="fas fa-table-tennis-paddle-ball"></i>Padel
+                </h2>
+                <div id="padel-abonnements" class="abonnements-container">
+                    <!-- Chargé dynamiquement -->
+                </div>
+                <button class="btn" style="display: flex;">
+                    <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
+                    <span class="fa fa-cart-plus" aria-hidden="true"
+                        style="position: relative;top: 12px;padding-left: 16px;"></span>
+                </button>
+            </div>
+
+            <div id="basketball" class="table">
+                <h2 class="heading text-center">
+                    <i class="fas fa-basketball-ball"></i>BasketBall
+                </h2>
+                <div id="basketball-abonnements" class="abonnements-container">
+                    <!-- Chargé dynamiquement -->
+                </div>
+                <button class="btn" style="display: flex;">
+                    <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
+                    <span class="fa fa-cart-plus" aria-hidden="true"
+                        style="position: relative;top: 12px;padding-left: 16px;"></span>
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i
+                            class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                    <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        fetch("../navbar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("navbar-placeholder").innerHTML = data);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadAllAbonnements();
+        });
+
+        function loadAllAbonnements() {
+            loadCategoryAbonnements('gym', 'gym-abonnements');
+            loadCategoryAbonnements('coaching', 'coaching-abonnements');
+            loadCategoryAbonnements('acces', 'acces-abonnements');
+            loadCategoryAbonnements('padel', 'padel-abonnements');
+            loadCategoryAbonnements('basketball', 'basketball-abonnements');
+        }
+
+        function loadCategoryAbonnements(category, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const abonnements = abonnementsManager.getAbonnementsByCategory(category);
+            container.innerHTML = '';
+
+            abonnements.forEach(abonnement => {
+                const block = document.createElement('div');
+                block.className = 'block';
+
+                let content = `<p>${abonnement.nom}
+                    <span class="price">${abonnement.prix}DT/
+                        <sub>${abonnement.duree}</sub>
+                    </span>`;
+
+                if (abonnement.description) {
+                    content += `<ul class="options"><li>${abonnement.description}</li></ul>`;
+                }
+
+                if (abonnement.pack10) {
+                    content += `<ul class="options">
+                        <li>${abonnement.pack10}DT / Pack 10 Séances</li>
+                    </ul>`;
+                }
+
+                content += '</p>';
+                block.innerHTML = content;
+                container.appendChild(block);
+            });
+        }
+    </script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+    <script src="../js/startbootstrap.js"></script>
+</body>
+
+</html>
