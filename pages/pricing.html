@@ -14,6 +14,7 @@
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" />
     <script src="../js/all.js" crossorigin="anonymous"></script>
+    <script src="../js/abonnements-manager.js"></script>
 
 </head>
 
@@ -36,47 +37,23 @@
 
             <div id="gym" class="table">
                 <h2 class="heading text-center">
-                    <i class="fa-light fa-dumbbell"></i>Gym
+                    <i class="fas fa-dumbbell"></i>Gym
                 </h2>
-                <div class="block">
-                    <p>Mensuel
-                        <span class="price">180DT/
-                            <sub>Mois</sub>
-                        </span>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>Trimestriel
-                        <span class="price">450DT/
-                            <sub>3 Mois</sub>
-                        </span>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>Semestriel
-                        <span class="price">750DT/
-                            <sub>6 Mois</sub>
-                        </span>
-                    </p>
-                </div>
-                <div class="block">
-                    <p>Annuel
-                        <span class="price">1300DT/
-                            <sub>An</sub>
-                        </span>
-                    </p>
+                <div id="gym-abonnements" class="abonnements-container">
+                    <!-- Les abonnements seront chargés dynamiquement -->
                 </div>
                 <button class="btn" style="display: flex;">
                     <p style="padding-left: 36px;position: relative;bottom: 4px;">Abonnez vous</p>
-                    <span class="fa fa-cart-plus" aria-hidden="true"
+                    <span class="fas fa-cart-plus" aria-hidden="true"
                         style="position: relative;top: 12px;padding-left: 16px;"></span>
                 </button>
             </div>
 
             <div id="private" class="table">
                 <h2 class="heading text-center">
-                    <i class="fa-light fa-lock"></i>Coaching Privée
+                    <i class="fas fa-lock"></i>Coaching Privée
                 </h2>
+                <div id="coaching-abonnements" class="abonnements-container"></div>
                 <div class="block">
                     <p>Individuel
                         <span class="price">30DT/
@@ -126,8 +103,9 @@
 
             <div id="passenger" class="table">
                 <h2 class="heading text-center">
-                    <i class="fa-light fa-person-walking-arrow-right"></i>Accés Libre
+                    <i class="fas fa-person-walking-arrow-right"></i>Accés Libre
                 </h2>
+                <div id="acces-abonnements" class="abonnements-container"></div>
                 <div class="block">
                     <p>Adultes
                         <span class="price">40DT/
@@ -161,8 +139,9 @@
 
             <div id="padel" class="table">
                 <h2 class="heading text-center">
-                    <i class="fa-light fa-table-tennis-paddle-ball"></i>Padel
+                    <i class="fas fa-table-tennis-paddle-ball"></i>Padel
                 </h2>
+                <div id="padel-abonnements" class="abonnements-container"></div>
                 <div class="block">
                     <p> Location Terrain
                         <span class="price">100DT/
@@ -198,8 +177,9 @@
 
             <div id="basketball" class="table">
                 <h2 class="heading text-center">
-                    <i class="fa-light fa-basketball-hoop"></i>BasketBall
+                    <i class="fas fa-basketball-ball"></i>BasketBall
                 </h2>
+                <div id="basketball-abonnements" class="abonnements-container"></div>
                 <div class="block">
                     <p> Location Terrain
                         <span class="price">100DT/
@@ -257,6 +237,57 @@
         fetch("../navbar.html")
             .then(res => res.text())
             .then(data => document.getElementById("navbar-placeholder").innerHTML = data);
+    </script>
+
+    <script>
+        // Charger les abonnements dynamiquement
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAbonnements();
+        });
+
+        function loadAbonnements() {
+            // Charger les abonnements gym
+            loadCategoryAbonnements('gym', 'gym-abonnements');
+            // Charger les abonnements coaching
+            loadCategoryAbonnements('coaching', 'coaching-abonnements');
+            // Charger les abonnements accès libre
+            loadCategoryAbonnements('acces', 'acces-abonnements');
+            // Charger les abonnements padel
+            loadCategoryAbonnements('padel', 'padel-abonnements');
+            // Charger les abonnements basketball
+            loadCategoryAbonnements('basketball', 'basketball-abonnements');
+        }
+
+        function loadCategoryAbonnements(category, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const abonnements = abonnementsManager.getAbonnementsByCategory(category);
+
+            // Vider le conteneur
+            container.innerHTML = '';
+
+            // Créer les éléments pour chaque abonnement
+            abonnements.forEach(abonnement => {
+                const block = document.createElement('div');
+                block.className = 'block';
+
+                let content = `<p>${abonnement.nom}
+                    <span class="price">${abonnement.prix}DT/
+                        <sub>${abonnement.duree}</sub>
+                    </span>`;
+
+                if (abonnement.pack10) {
+                    content += `<ul class="options">
+                        <li>${abonnement.pack10}DT/ Pack 10 Séances</li>
+                    </ul>`;
+                }
+
+                content += '</p>';
+                block.innerHTML = content;
+                container.appendChild(block);
+            });
+        }
     </script>
 
     <script src="../js/bootstrap.bundle.min.js"></script>

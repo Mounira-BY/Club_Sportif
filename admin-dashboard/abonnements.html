@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Administration - Gestion des Abonnements" />
+    <meta name="author" content="Club Sportif" />
+    <title>Administration - Abonnements</title>
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link href="../css/monserrat.css" rel="stylesheet" type="text/css" />
+    <link href="../css/robottoslab.css" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" />
+    <script src="../js/all.js" crossorigin="anonymous"></script>
+    <script src="../js/abonnements-manager.js"></script>
+
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .admin-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-title {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-add {
+            background: #ffc800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+        }
+
+        .abonnements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .abonnement-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .abonnement-card:hover {
+            border-color: #ffc800;
+            box-shadow: 0 5px 15px rgba(255, 200, 0, 0.2);
+        }
+
+        .abonnement-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .abonnement-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffc800;
+            margin-bottom: 5px;
+        }
+
+        .abonnement-duration {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .abonnement-description {
+            color: #495057;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .abonnement-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #4e73df;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2e59d9;
+        }
+
+        .btn-delete {
+            background: #e74a3b;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ffc800;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-primary {
+            background: #ffc800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #e6b800;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .abonnements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <div id="navbar-placeholder"></div>
+
+    <section class="admin-section">
+        <div class="container admin-container">
+            <div class="admin-header">
+                <h1><i class="fas fa-cogs"></i> Gestion des Abonnements</h1>
+                <p>Administrez tous les abonnements du Club Sportif</p>
+            </div>
+
+            <!-- Gym Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title"><i class="fas fa-dumbbell"></i> Salle de Gym</h2>
+                    <button class="btn-add" onclick="openAddModal('gym')">
+                        <i class="fas fa-plus"></i> Ajouter un abonnement
+                    </button>
+                </div>
+                <div id="gym-abonnements" class="abonnements-grid">
+                    <!-- Les abonnements seront chargés dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Coaching Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title"><i class="fas fa-lock"></i> Coaching Privé</h2>
+                    <button class="btn-add" onclick="openAddModal('coaching')">
+                        <i class="fas fa-plus"></i> Ajouter un abonnement
+                    </button>
+                </div>
+                <div id="coaching-abonnements" class="abonnements-grid">
+                    <!-- Les abonnements seront chargés dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Accès Libre Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title"><i class="fas fa-person-walking-arrow-right"></i> Accès Libre</h2>
+                    <button class="btn-add" onclick="openAddModal('acces')">
+                        <i class="fas fa-plus"></i> Ajouter un abonnement
+                    </button>
+                </div>
+                <div id="acces-abonnements" class="abonnements-grid">
+                    <!-- Les abonnements seront chargés dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Padel Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title"><i class="fas fa-table-tennis-paddle-ball"></i> Padel</h2>
+                    <button class="btn-add" onclick="openAddModal('padel')">
+                        <i class="fas fa-plus"></i> Ajouter un abonnement
+                    </button>
+                </div>
+                <div id="padel-abonnements" class="abonnements-grid">
+                    <!-- Les abonnements seront chargés dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Basketball Section -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title"><i class="fas fa-basketball-ball"></i> Basketball</h2>
+                    <button class="btn-add" onclick="openAddModal('basketball')">
+                        <i class="fas fa-plus"></i> Ajouter un abonnement
+                    </button>
+                </div>
+                <div id="basketball-abonnements" class="abonnements-grid">
+                    <!-- Les abonnements seront chargés dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal pour ajouter/modifier un abonnement -->
+    <div id="abonnementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title">Ajouter un abonnement</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="abonnementForm">
+                <input type="hidden" id="abonnementId" value="">
+                <input type="hidden" id="abonnementCategory" value="">
+
+                <div class="form-group">
+                    <label for="abonnementNom" class="form-label">Nom de l'abonnement</label>
+                    <input type="text" class="form-control" id="abonnementNom" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="abonnementPrix" class="form-label">Prix (DT)</label>
+                    <input type="number" class="form-control" id="abonnementPrix" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="abonnementDuree" class="form-label">Durée</label>
+                    <input type="text" class="form-control" id="abonnementDuree" placeholder="ex: Mois, Séance, Pack" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="abonnementDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="abonnementDescription" rows="3" placeholder="Description de l'abonnement"></textarea>
+                </div>
+
+                <div class="form-group" id="pack10Group" style="display: none;">
+                    <label for="abonnementPack10" class="form-label">Prix pack 10 séances (optionnel)</label>
+                    <input type="number" class="form-control" id="abonnementPack10" min="0" step="0.01" placeholder="Prix pour 10 séances">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmer la suppression</h2>
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <p>Êtes-vous sûr de vouloir supprimer cet abonnement ? Cette action est irréversible.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Annuler</button>
+                <button type="button" class="btn-delete" onclick="confirmDelete()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = '';
+        let abonnementToDelete = null;
+
+        // Charger la navbar
+        fetch("../navbar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("navbar-placeholder").innerHTML = data);
+
+        // Charger tous les abonnements au démarrage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllAbonnements();
+            setupFormHandlers();
+        });
+
+        function loadAllAbonnements() {
+            loadCategoryAbonnements('gym', 'gym-abonnements');
+            loadCategoryAbonnements('coaching', 'coaching-abonnements');
+            loadCategoryAbonnements('acces', 'acces-abonnements');
+            loadCategoryAbonnements('padel', 'padel-abonnements');
+            loadCategoryAbonnements('basketball', 'basketball-abonnements');
+        }
+
+        function loadCategoryAbonnements(category, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const abonnements = abonnementsManager.getAbonnementsByCategory(category);
+            container.innerHTML = '';
+
+            if (abonnements.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Aucun abonnement dans cette catégorie</p>
+                    </div>
+                `;
+                return;
+            }
+
+            abonnements.forEach(abonnement => {
+                const card = document.createElement('div');
+                card.className = 'abonnement-card';
+
+                let packInfo = '';
+                if (abonnement.pack10) {
+                    packInfo = `<br><small style="color: #6c757d;">Pack 10: ${abonnement.pack10}DT</small>`;
+                }
+
+                card.innerHTML = `
+                    <div class="abonnement-name">${abonnement.nom}</div>
+                    <div class="abonnement-price">${abonnement.prix} DT</div>
+                    <div class="abonnement-duration">par ${abonnement.duree}</div>
+                    ${abonnement.description ? `<div class="abonnement-description">${abonnement.description}</div>` : ''}
+                    <div class="abonnement-actions">
+                        <button class="btn-edit" onclick="editAbonnement('${category}', ${abonnement.id})">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button class="btn-delete" onclick="deleteAbonnement('${category}', ${abonnement.id})">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function openAddModal(category) {
+            currentCategory = category;
+            document.getElementById('modalTitle').textContent = 'Ajouter un abonnement';
+            document.getElementById('abonnementForm').reset();
+            document.getElementById('abonnementId').value = '';
+            document.getElementById('abonnementCategory').value = category;
+
+            // Afficher le champ pack10 pour certaines catégories
+            const pack10Group = document.getElementById('pack10Group');
+            if (category === 'coaching' || category === 'acces') {
+                pack10Group.style.display = 'block';
+            } else {
+                pack10Group.style.display = 'none';
+            }
+
+            document.getElementById('abonnementModal').style.display = 'block';
+        }
+
+        function editAbonnement(category, id) {
+            const abonnement = abonnementsManager.getAbonnementById(category, id);
+            if (!abonnement) return;
+
+            currentCategory = category;
+            document.getElementById('modalTitle').textContent = 'Modifier l\'abonnement';
+            document.getElementById('abonnementId').value = id;
+            document.getElementById('abonnementCategory').value = category;
+            document.getElementById('abonnementNom').value = abonnement.nom;
+            document.getElementById('abonnementPrix').value = abonnement.prix;
+            document.getElementById('abonnementDuree').value = abonnement.duree;
+            document.getElementById('abonnementDescription').value = abonnement.description || '';
+            document.getElementById('abonnementPack10').value = abonnement.pack10 || '';
+
+            // Afficher le champ pack10 pour certaines catégories
+            const pack10Group = document.getElementById('pack10Group');
+            if (category === 'coaching' || category === 'acces') {
+                pack10Group.style.display = 'block';
+            } else {
+                pack10Group.style.display = 'none';
+            }
+
+            document.getElementById('abonnementModal').style.display = 'block';
+        }
+
+        function deleteAbonnement(category, id) {
+            abonnementToDelete = { category, id };
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function confirmDelete() {
+            if (abonnementToDelete) {
+                abonnementsManager.deleteAbonnement(abonnementToDelete.category, abonnementToDelete.id);
+                loadAllAbonnements();
+                closeDeleteModal();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('abonnementModal').style.display = 'none';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            abonnementToDelete = null;
+        }
+
+        function setupFormHandlers() {
+            document.getElementById('abonnementForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const id = document.getElementById('abonnementId').value;
+                const category = document.getElementById('abonnementCategory').value;
+                const nom = document.getElementById('abonnementNom').value;
+                const prix = parseFloat(document.getElementById('abonnementPrix').value);
+                const duree = document.getElementById('abonnementDuree').value;
+                const description = document.getElementById('abonnementDescription').value;
+                const pack10 = document.getElementById('abonnementPack10').value ?
+                    parseFloat(document.getElementById('abonnementPack10').value) : null;
+
+                const abonnement = {
+                    nom,
+                    prix,
+                    duree,
+                    description,
+                    pack10
+                };
+
+                if (id) {
+                    // Modification
+                    abonnement.id = parseInt(id);
+                    abonnementsManager.updateAbonnement(category, parseInt(id), abonnement);
+                } else {
+                    // Ajout
+                    abonnementsManager.addAbonnement(category, abonnement);
+                }
+
+                loadAllAbonnements();
+                closeModal();
+            });
+
+            // Fermer les modals en cliquant en dehors
+            window.onclick = function(event) {
+                const modal = document.getElementById('abonnementModal');
+                const deleteModal = document.getElementById('deleteModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+                if (event.target === deleteModal) {
+                    closeDeleteModal();
+                }
+            };
+        }
+    </script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+    <script src="../js/startbootstrap.js"></script>
+</body>
+
+</html>
