@@ -13,47 +13,68 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <script src="../js/all.js" crossorigin="anonymous"></script>
-    <script src="../js/abonnements-manager.js"></script>
+    <script src="./js/abonnements-manager.js"></script>
 
     <style>
+        :root {
+            --sg-bg: #f5f7fb;
+            --sg-surface: #ffffff;
+            --sg-border: #e6e9ef;
+            --sg-text: #1f2937;
+            --sg-muted: #6b7280;
+            --sg-primary: #4272d7;
+            --sg-primary-2: #2c5fc9;
+            --sg-sidebar-bg: #1f2a44;
+        }
+
+        body {
+            background: var(--sg-bg);
+            color: var(--sg-text);
+            font-family: 'Roboto Slab', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         .admin-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 1.5rem;
         }
 
         .admin-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, var(--sg-primary), var(--sg-primary-2));
             color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(66,114,215,.35);
         }
 
         .admin-header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
         }
 
         .admin-header p {
-            margin: 10px 0 0 0;
+            margin: 0.5rem 0 0 0;
             opacity: 0.9;
         }
 
         .category-section {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: var(--sg-surface);
+            border: 1px solid var(--sg-border);
+            border-radius: 12px;
+            margin-bottom: 2rem;
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,.04);
         }
 
         .category-header {
-            background: #f8f9fa;
-            padding: 20px;
-            border-bottom: 2px solid #e9ecef;
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--sg-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,242 +82,297 @@
 
         .category-title {
             margin: 0;
-            color: #2c3e50;
-            font-size: 1.5rem;
+            color: var(--sg-text);
+            font-size: 1.25rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-add {
-            background: #ffc800;
+            background: var(--sg-primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-add:hover {
-            background: #e6b800;
-            transform: translateY(-2px);
+            background: var(--sg-primary-2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(66,114,215,.35);
         }
 
         .abonnements-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+            padding: 1.25rem;
         }
 
         .abonnement-card {
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
+            background: var(--sg-surface);
+            border: 1px solid var(--sg-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.15s;
             position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,.04);
         }
 
         .abonnement-card:hover {
-            border-color: #ffc800;
-            box-shadow: 0 5px 15px rgba(255, 200, 0, 0.2);
+            border-color: var(--sg-primary);
+            box-shadow: 0 4px 12px rgba(66,114,215,.15);
+            transform: translateY(-2px);
         }
 
         .abonnement-name {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
+            color: var(--sg-text);
+            margin-bottom: 0.75rem;
         }
 
         .abonnement-price {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #ffc800;
-            margin-bottom: 5px;
+            color: var(--sg-primary);
+            margin-bottom: 0.25rem;
         }
 
         .abonnement-duration {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            color: var(--sg-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
         }
 
         .abonnement-description {
-            color: #495057;
+            color: var(--sg-text);
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
+            line-height: 1.4;
         }
 
         .abonnement-actions {
             display: flex;
-            gap: 10px;
+            gap: 0.5rem;
             justify-content: flex-end;
         }
 
         .btn-edit, .btn-delete {
-            padding: 8px 15px;
+            padding: 0.5rem 1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
         .btn-edit {
-            background: #4e73df;
+            background: #00ad5f;
             color: white;
         }
 
         .btn-edit:hover {
-            background: #2e59d9;
+            background: #008b4d;
+            transform: translateY(-1px);
         }
 
         .btn-delete {
-            background: #e74a3b;
+            background: #ef4444;
             color: white;
         }
 
         .btn-delete:hover {
-            background: #c82333;
+            background: #dc2626;
+            transform: translateY(-1px);
         }
 
         /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 1050;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
         }
 
         .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 10px;
+            background-color: var(--sg-surface);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 12px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,.15);
+            border: 1px solid var(--sg-border);
         }
 
         .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--sg-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
 
         .modal-title {
             margin: 0;
-            color: #2c3e50;
-            font-size: 1.5rem;
+            color: var(--sg-text);
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
         .close {
-            color: #aaa;
-            font-size: 28px;
+            color: var(--sg-muted);
+            font-size: 1.5rem;
             font-weight: bold;
             cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.15s;
         }
 
         .close:hover {
-            color: #000;
+            color: var(--sg-text);
+            background: var(--sg-bg);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 5px;
-            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            color: var(--sg-text);
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            padding: 0.75rem;
+            border: 1px solid var(--sg-border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: var(--sg-surface);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #ffc800;
+            border-color: var(--sg-primary);
+            box-shadow: 0 0 0 3px rgba(66,114,215,.1);
         }
 
         .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--sg-border);
             display: flex;
-            gap: 10px;
+            gap: 0.75rem;
             justify-content: flex-end;
-            margin-top: 30px;
         }
 
         .btn-secondary {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            background: var(--sg-bg);
+            color: var(--sg-text);
+            border: 1px solid var(--sg-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            transition: all 0.15s;
         }
 
         .btn-secondary:hover {
-            background: #545b62;
+            background: #e6e9ef;
         }
 
         .btn-primary {
-            background: #ffc800;
+            background: var(--sg-primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            transition: all 0.15s;
         }
 
         .btn-primary:hover {
-            background: #e6b800;
+            background: var(--sg-primary-2);
+            box-shadow: 0 4px 12px rgba(66,114,215,.35);
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #6c757d;
+            padding: 3rem;
+            color: var(--sg-muted);
         }
 
         .empty-state i {
             font-size: 3rem;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
             opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 1rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .admin-container {
+                padding: 1rem;
+            }
+
             .abonnements-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
             }
 
             .category-header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 1rem;
                 text-align: center;
+                padding: 1rem;
             }
 
             .modal-content {
-                margin: 10% auto;
+                margin: 5% auto;
                 width: 95%;
+            }
+
+            .abonnement-actions {
+                flex-direction: column;
+            }
+
+            .btn-edit, .btn-delete {
+                justify-content: center;
             }
         }
     </style>
@@ -392,42 +468,43 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle" class="modal-title">Ajouter un abonnement</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
+                <button type="button" class="close" onclick="closeModal()">&times;</button>
             </div>
-            <form id="abonnementForm">
-                <input type="hidden" id="abonnementId" value="">
-                <input type="hidden" id="abonnementCategory" value="">
+            <div class="modal-body">
+                <form id="abonnementForm">
+                    <input type="hidden" id="abonnementId" value="">
+                    <input type="hidden" id="abonnementCategory" value="">
 
-                <div class="form-group">
-                    <label for="abonnementNom" class="form-label">Nom de l'abonnement</label>
-                    <input type="text" class="form-control" id="abonnementNom" required>
-                </div>
+                    <div class="form-group">
+                        <label for="abonnementNom" class="form-label">Nom de l'abonnement</label>
+                        <input type="text" class="form-control" id="abonnementNom" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="abonnementPrix" class="form-label">Prix (DT)</label>
-                    <input type="number" class="form-control" id="abonnementPrix" min="0" step="0.01" required>
-                </div>
+                    <div class="form-group">
+                        <label for="abonnementPrix" class="form-label">Prix (DT)</label>
+                        <input type="number" class="form-control" id="abonnementPrix" min="0" step="0.01" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="abonnementDuree" class="form-label">Durée</label>
-                    <input type="text" class="form-control" id="abonnementDuree" placeholder="ex: Mois, Séance, Pack" required>
-                </div>
+                    <div class="form-group">
+                        <label for="abonnementDuree" class="form-label">Durée</label>
+                        <input type="text" class="form-control" id="abonnementDuree" placeholder="ex: Mois, Séance, Pack" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="abonnementDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="abonnementDescription" rows="3" placeholder="Description de l'abonnement"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="abonnementDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="abonnementDescription" rows="3" placeholder="Description de l'abonnement"></textarea>
+                    </div>
 
-                <div class="form-group" id="pack10Group" style="display: none;">
-                    <label for="abonnementPack10" class="form-label">Prix pack 10 séances (optionnel)</label>
-                    <input type="number" class="form-control" id="abonnementPack10" min="0" step="0.01" placeholder="Prix pour 10 séances">
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
-                    <button type="submit" class="btn-primary">Enregistrer</button>
-                </div>
-            </form>
+                    <div class="form-group" id="pack10Group" style="display: none;">
+                        <label for="abonnementPack10" class="form-label">Prix pack 10 séances (optionnel)</label>
+                        <input type="number" class="form-control" id="abonnementPack10" min="0" step="0.01" placeholder="Prix pour 10 séances">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
+                <button type="submit" form="abonnementForm" class="btn-primary">Enregistrer</button>
+            </div>
         </div>
     </div>
 
@@ -436,9 +513,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Confirmer la suppression</h2>
-                <span class="close" onclick="closeDeleteModal()">&times;</span>
+                <button type="button" class="close" onclick="closeDeleteModal()">&times;</button>
             </div>
-            <p>Êtes-vous sûr de vouloir supprimer cet abonnement ? Cette action est irréversible.</p>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet abonnement ? Cette action est irréversible.</p>
+            </div>
             <div class="modal-actions">
                 <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Annuler</button>
                 <button type="button" class="btn-delete" onclick="confirmDelete()">Supprimer</button>
@@ -627,9 +706,9 @@
         }
     </script>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="../js/startbootstrap.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/scripts.js"></script>
+    <script src="./js/startbootstrap.js"></script>
 </body>
 
 </html>
