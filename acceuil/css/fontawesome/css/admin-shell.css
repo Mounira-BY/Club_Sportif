@@ -93,7 +93,15 @@
 .sg-shell .overview-item .icon { font-size: 1.75rem; opacity: .85; margin-bottom: .25rem; }
 .sg-shell .overview-item .text h2 { font-size: 1.5rem; font-weight: 700; margin: 0; }
 .sg-shell .overview-item .text span { font-size: .82rem; opacity: .9; }
-.sg-shell .overview-chart { margin-top: .5rem; height: 40px; }
+.sg-shell .overview-chart {
+  margin-top: .5rem;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  overflow: hidden;
+  position: relative;
+  line-height: 0;
+}
 .sg-shell .au-card { background: var(--sg-surface); border: 1px solid var(--sg-border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
 .sg-shell .au-card-inner { padding: 0; }
 .sg-shell .title-1 { font-size: 1.25rem; font-weight: 700; margin: 0; }
@@ -124,3 +132,57 @@ html[data-embed] .page-wrapper { display: block !important; }
 html[data-embed] .main-content { padding: 1rem !important; }
 html[data-embed] .section__content--p30 { padding: 0 !important; }
 html[data-embed] .copyright { display: none; }
+
+/* rset some of the dashboard's more aggressive styles to fit better inside the iframe */
+.overview-item {
+  height: 140px !important;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sg-shell .row > [class*="col-"] {
+  display: flex;
+}
+
+.sg-shell .overview-item {
+  width: 100%;
+  height: 100%;
+}
+
+.sg-shell .au-card {
+  width: 100%;
+  height: auto !important;
+}
+
+.sg-shell .au-card canvas {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+}
+
+#recent-rep-chart {
+  height: 120px !important;
+  max-height: 120px !important;
+}
+
+#percent-chart {
+  height: 160px !important;
+  max-height: 160px !important;
+}
+
+.sg-shell .overview-chart canvas {
+  display: block;
+  width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  box-sizing: border-box;
+}
+
+.sg-main {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
