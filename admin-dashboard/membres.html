@@ -1,989 +1,569 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="description" content="Smart GYM - Dashboard Admin" />
-    <meta name="author" content="Smart GYM" />
-    <meta name="keywords" content="gym, fitness, dashboard" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Smart GYM - Gestion des Membres</title>
 
-    <title>Smart GYM - Dashboard</title>
-    <link href="../acceuil/css/monserrat.css" rel="stylesheet" type="text/css" />
-    <link href="../acceuil/css/styles.css" rel="stylesheet" />
-
-    <!-- Fontfaces CSS-->
-
-    <!-- Bootstrap CSS-->
-
-    <!-- Vendor CSS-->
-
-    <!-- Main CSS-->
-    
-    <style>
-  .logo img {
-    padding-left: 50px; 
-    max-width: 150px;
-    max-height: 70px;
-    object-fit: contain;
-  }
-</style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<link href="../acceuil/css/fontawesome/css/admin-shell.css" rel="stylesheet" />
-<script src="../admin-dashboard/js/embed.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="../acceuil/css/fontawesome/css/admin-shell.css" rel="stylesheet" />
+
+  <style>
+    .admin-header {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white; padding: 30px; border-radius: 15px;
+      margin-bottom: 30px; text-align: center;
+    }
+    .admin-header h1 { margin: 0; font-size: 2.5rem; font-weight: 700; }
+    .admin-header p  { margin: 10px 0 0; opacity: 0.9; }
+
+    .toolbar {
+      background: white; border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      padding: 20px; margin-bottom: 24px;
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    }
+    .search-box {
+      flex: 1; min-width: 220px; position: relative;
+    }
+    .search-box i {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%); color: #aaa;
+    }
+    .search-box input {
+      width: 100%; padding: 10px 10px 10px 36px;
+      border: 2px solid #e9ecef; border-radius: 8px; font-size: 0.95rem;
+    }
+    .search-box input:focus { outline: none; border-color: #ffc800; }
+
+    .btn-add-member {
+      background: #ffc800; color: white; border: none;
+      padding: 10px 22px; border-radius: 8px; font-weight: 600;
+      cursor: pointer; white-space: nowrap; transition: all 0.3s;
+    }
+    .btn-add-member:hover { background: #e6b800; transform: translateY(-2px); }
+
+    .members-card {
+      background: white; border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08); overflow: hidden;
+    }
+    .members-card table { margin: 0; }
+    .members-card thead th {
+      background: #f8f9fa; color: #2c3e50;
+      font-weight: 600; font-size: 0.85rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 2px solid #e9ecef; padding: 14px 16px;
+    }
+    .members-card tbody td { padding: 14px 16px; vertical-align: middle; }
+    .members-card tbody tr:hover { background: #fffdf0; }
+
+    .member-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, #ffc800, #e6b800);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1rem; flex-shrink: 0;
+    }
+    .member-name { font-weight: 600; color: #2c3e50; }
+    .member-contact { font-size: 0.82rem; color: #6c757d; }
+
+    .badge-statut {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .badge-actif    { background: #d4edda; color: #155724; }
+    .badge-inactif  { background: #f8d7da; color: #721c24; }
+    .badge-suspendu { background: #fff3cd; color: #856404; }
+
+    .badge-abo {
+      background: #e8f0fe; color: #1a56db;
+      padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+    }
+    .badge-no-abo {
+      background: #f1f3f5; color: #868e96;
+      padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;
+    }
+
+    .expiry-warning { color: #e74a3b; font-size: 0.8rem; font-weight: 600; }
+    .expiry-ok      { color: #00ad5f; font-size: 0.8rem; }
+
+    .btn-action {
+      padding: 6px 12px; border: none; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-action-edit   { background: #4e73df; color: white; }
+    .btn-action-edit:hover { background: #2e59d9; }
+    .btn-action-delete { background: #e74a3b; color: white; }
+    .btn-action-delete:hover { background: #c82333; }
+
+    .stats-strip {
+      display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: white; border-radius: 8px; padding: 12px 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+      display: flex; align-items: center; gap: 10px; flex: 1; min-width: 140px;
+    }
+    .stat-pill i { font-size: 1.4rem; }
+    .stat-pill .val { font-size: 1.5rem; font-weight: 700; color: #2c3e50; }
+    .stat-pill .lbl { font-size: 0.78rem; color: #6c757d; }
+
+    /* Modals */
+    .modal-overlay {
+      display: none; position: fixed; z-index: 1050;
+      inset: 0; background: rgba(0,0,0,0.5);
+    }
+    .modal-overlay.active { display: flex; align-items: center; justify-content: center; }
+    .modal-box {
+      background: white; border-radius: 12px; padding: 30px;
+      width: 90%; max-width: 560px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-top {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 24px;
+    }
+    .modal-top h2 { margin: 0; color: #2c3e50; font-size: 1.4rem; font-weight: 600; }
+    .btn-close-x { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #aaa; }
+    .btn-close-x:hover { color: #000; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 5px; color: #2c3e50; font-weight: 600; font-size: 0.88rem; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 10px 12px; border: 2px solid #e9ecef;
+      border-radius: 6px; font-size: 0.95rem; box-sizing: border-box;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #ffc800; }
+
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn-secondary {
+      background: #6c757d; color: white; border: none;
+      padding: 10px 22px; border-radius: 6px; cursor: pointer; font-weight: 600;
+    }
+    .btn-primary {
+      background: #ffc800; color: white; border: none;
+      padding: 10px 22px; border-radius: 6px; cursor: pointer; font-weight: 600;
+    }
+    .btn-primary:hover { background: #e6b800; }
+    .btn-danger  {
+      background: #e74a3b; color: white; border: none;
+      padding: 10px 22px; border-radius: 6px; cursor: pointer; font-weight: 600;
+    }
+
+    .empty-row td { text-align: center; padding: 50px; color: #6c757d; }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .toolbar  { flex-direction: column; }
+    }
+  </style>
 </head>
 
-  <body>
-    <div class="page-wrapper">
-      <!-- HEADER MOBILE-->
-      <header class="header-mobile d-block d-lg-none">
-        <div class="header-mobile__bar">
-          <div class="container-fluid">
-            <div class="header-mobile-inner">
-              <a class="logo" href="index.html">
-                <img src="images/icon/logo-fitness-center.png" alt="Smart GYM" />
-              </a>
-              <button class="hamburger hamburger--slider" type="button">
-                <span class="hamburger-box">
-                  <span class="hamburger-inner"></span>
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <nav class="navbar-mobile">
-          <div class="container-fluid">
-            <ul class="navbar-mobile__list list-unstyled">
-              <li class="active">
-                <a href="index1.html">
-                  <i class="fas fa-tachometer-alt"></i>Tableau de Bord</a
-                >
-              </li>
-              <li>
-                <a href="membres.html"> <i class="fas fa-users"></i>Abonnés</a>
-              </li>
-              <li>
-                <a href="abonnements.html">
-                  <i class="fas fa-users"></i>Abonnements</a
-                >
-              </li>
-              <li>
-                <a href="reservations.html">
-                  <i class="fas fa-calendar-check"></i>Réservations</a
-                >
-              </li>
-              <li>
-                <a href="paiements.html">
-                  <i class="fas fa-credit-card"></i>Paiements</a
-                >
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      <!-- END HEADER MOBILE-->
+<body>
+<div class="container" style="max-width:1300px;padding:20px">
 
-      <!-- MENU SIDEBAR-->
-      <aside class="menu-sidebar d-none d-lg-block">
-        <div class="logo">
-          <a href="index.html">
-            <img src="images/icon/logo-fitness-center.png" alt="Smart GYM" />
-          </a>
-        </div>
-        <div class="menu-sidebar__content js-scrollbar1">
-          <nav class="navbar-sidebar">
-            <ul class="list-unstyled navbar__list">
-              <li>
-                <a href="index1.html">
-                  <i class="fas fa-tachometer-alt"></i>Tableau de Bord</a
-                >
-              </li>
-              <li class="active">
-                <a href="membres.html"> <i class="fas fa-users"></i>Abonnés</a>
-              </li>
-              <li>
-                <a href="abonnements.html">
-                  <i class="fas fa-users"></i>Abonnements</a
-                >
-              </li>
-              <li>
-                <a href="reservations.html">
-                  <i class="fas fa-calendar-check"></i>Réservations</a
-                >
-              </li>
-              <li>
-                <a href="paiements.html">
-                  <i class="fas fa-credit-card"></i>Paiements</a
-                >
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </aside>
-      <!-- END MENU SIDEBAR-->
+  <div class="admin-header">
+    <h1><i class="fas fa-users"></i> Gestion des Membres</h1>
+    <p>Consultez, ajoutez et gérez tous les abonnés du Club Sportif</p>
+  </div>
 
-      <!-- PAGE CONTAINER-->
-      <div class="page-container">
-        <!-- HEADER DESKTOP-->
-        <header class="header-desktop">
-          <div class="section__content section__content--p30">
-            <div class="container-fluid">
-              <div class="header-wrap">
-                <form class="form-header" action="" method="POST">
-                  <input
-                    class="au-input au-input--xl"
-                    type="text"
-                    name="search"
-                    placeholder="Rechercher un abonné..."
-                  />
-                  <button class="au-btn--submit" type="submit">
-                    <i class="zmdi zmdi-search"></i>
-                  </button>
-                </form>
-                <div class="header-button">
-                  <div class="noti-wrap">
-                    <div class="noti__item js-item-menu">
-                      <i class="zmdi zmdi-notifications"></i>
-                      <span class="quantity">5</span>
-                      <div class="notifi-dropdown js-dropdown">
-                        <div class="notifi__title">
-                          <p>Vous avez 5 Notifications</p>
-                        </div>
-                        <div class="notifi__item">
-                          <div class="bg-c1 img-cir img-40">
-                            <i class="zmdi zmdi-alert-triangle"></i>
-                          </div>
-                          <div class="content">
-                            <p>12 abonnements expirent dans 7 jours</p>
-                            <span class="date">15 Déc 2024</span>
-                          </div>
-                        </div>
-                        <div class="notifi__item">
-                          <div class="bg-c2 img-cir img-40">
-                            <i class="zmdi zmdi-close-circle"></i>
-                          </div>
-                          <div class="content">
-                            <p>5 abonnements ont expiré aujourd'hui</p>
-                            <span class="date">14 Déc 2024</span>
-                          </div>
-                        </div>
-                        <div class="notifi__item">
-                          <div class="bg-c3 img-cir img-40">
-                            <i class="zmdi zmdi-calendar"></i>
-                          </div>
-                          <div class="content">
-                            <p>Terrain Padel réservé à 18h00</p>
-                            <span class="date">13 Déc 2024</span>
-                          </div>
-                        </div>
-                        <div class="notifi__footer">
-                          <a href="#">Toutes les notifications</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="account-wrap">
-                    <div class="account-item clearfix js-item-menu">
-                      <div class="image">
-                        <img src="images/icon/avatar-01.jpg" alt="Admin" />
-                      </div>
-                      <div class="content">
-                        <a class="js-acc-btn" href="#">Admin Smart GYM</a>
-                      </div>
-                      <div class="account-dropdown js-dropdown">
-                        <div class="info clearfix">
-                          <div class="image">
-                            <a href="#">
-                              <img
-                                src="images/icon/avatar-01.jpg"
-                                alt="Admin"
-                              />
-                            </a>
-                          </div>
-                          <div class="content">
-                            <h5 class="name">
-                              <a href="#">Admin Smart GYM</a>
-                            </h5>
-                            <span class="email">admin@smartgym.tn</span>
-                          </div>
-                        </div>
-                        <div class="account-dropdown__body">
-                          <div class="account-dropdown__item">
-                            <a href="#">
-                              <i class="zmdi zmdi-account"></i>Profil</a
-                            >
-                          </div>
-                          <div class="account-dropdown__item">
-                            <a href="#">
-                              <i class="zmdi zmdi-settings"></i>Paramètres</a
-                            >
-                          </div>
-                        </div>
-                        <div class="account-dropdown__footer">
-                          <a href="#">
-                            <i class="zmdi zmdi-power"></i>Déconnexion</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-        <!-- END HEADER DESKTOP-->
+  <!-- Stats strip -->
+  <div class="stats-strip" id="statsStrip">
+    <div class="stat-pill"><i class="fas fa-users" style="color:#4272d7"></i>
+      <div><div class="val" id="sTotal">—</div><div class="lbl">Total membres</div></div></div>
+    <div class="stat-pill"><i class="fas fa-check-circle" style="color:#00ad5f"></i>
+      <div><div class="val" id="sActif">—</div><div class="lbl">Actifs</div></div></div>
+    <div class="stat-pill"><i class="fas fa-exclamation-triangle" style="color:#ffc800"></i>
+      <div><div class="val" id="sExpire">—</div><div class="lbl">Abonnement expiré bientôt</div></div></div>
+    <div class="stat-pill"><i class="fas fa-times-circle" style="color:#e74a3b"></i>
+      <div><div class="val" id="sInactif">—</div><div class="lbl">Inactifs</div></div></div>
+  </div>
 
-        <!-- MAIN CONTENT-->
-        <div class="main-content">
-          <div class="section__content section__content--p30">
-            <h3 class="title-5 m-b-35">Liste des Abonnés</h3>
-            <div class="table-data__tool">
-              <div class="table-data__tool-left">
-                <div class="select-wrapper">
-                  <select class="form-select form-select-lg"
-                  id="statusFilter">
-                    <option value="" selected>Tous les statuts</option>
-                    <option value="Actif">Actif</option>
-                    <option value="Inactif">Inactif</option>
-                    <option value="Expiré">Expiré</option>
-                  </select>
-                </div>
-                <button class="au-btn-filter">
-                  <i class="zmdi zmdi-filter-list"></i>filtres
-                </button>
-              </div>
-              <div class="table-data__tool-right">
-                <button
-                  class="au-btn au-btn-icon au-btn--blue"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addMemberModal"
-                >
-                  <i class="zmdi zmdi-plus"></i>Ajouter Abonné
-                </button>
-              </div>
-            </div>
-
-            <div class="table-responsive table-responsive-data2">
-              <table class="table table-data2">
-                <thead>
-                  <tr>
-                    <th>
-                      <label class="au-checkbox">
-                        <input type="checkbox" id="selectAll" />
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Téléphone</th>
-                    <th>Abonnement</th>
-                    <th>Date d'inscription</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox" />
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Ahmed Ben Ali</td>
-                    <td>
-                      <span class="block-email">ahmed.benali@gmail.com</span>
-                    </td>
-                    <td>22 345 678</td>
-                    <td>Gym Mensuel</td>
-                    <td>01/10/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=1"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Fatma Trabelsi</td>
-                    <td>
-                      <span class="block-email">fatma.trabelsi@mail.com</span>
-                    </td>
-                    <td>55 789 112</td>
-                    <td>Coaching Groupe 2</td>
-                    <td>15/11/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=2"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox" />
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Mohamed Jebali</td>
-                    <td>
-                      <span class="block-email">m.jebali@hotmail.com</span>
-                    </td>
-                    <td>98 123 456</td>
-                    <td>Gym Annuel</td>
-                    <td>05/09/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=3"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox" />
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Nour Hamdi</td>
-                    <td>
-                      <span class="block-email">nour.hamdi@yahoo.fr</span>
-                    </td>
-                    <td>24 567 890</td>
-                    <td>Kids Trimestriel</td>
-                    <td>20/10/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=4"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox" />
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Slim Gharbi</td>
-                    <td>
-                      <span class="block-email">slim.gharbi@gmail.com</span>
-                    </td>
-                    <td>50 321 987</td>
-                    <td>Padel Pack 5</td>
-                    <td>12/11/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=5"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Expiré">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Salma Cherif</td>
-                    <td>
-                      <span class="block-email">salma.cherif@outlook.com</span>
-                    </td>
-                    <td>29 876 543</td>
-                    <td>Gym Trimestriel</td>
-                    <td>03/08/2024</td>
-                    <td>
-                      <span class="status--denied">Expiré</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=6"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Karim Mejri</td>
-                    <td>
-                      <span class="block-email">k.mejri@gmail.com</span>
-                    </td>
-                    <td>54 234 567</td>
-                    <td>Coaching Individuel</td>
-                    <td>28/09/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=7"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Actif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Yasmine Khaled</td>
-                    <td>
-                      <span class="block-email">yasmine.k@mail.tn</span>
-                    </td>
-                    <td>26 654 321</td>
-                    <td>Gym Semestriel</td>
-                    <td>10/07/2024</td>
-                    <td>
-                      <span class="status--process">Actif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=8"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Inactif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Mehdi Bouazizi</td>
-                    <td>
-                      <span class="block-email">mehdi.b@hotmail.fr</span>
-                    </td>
-                    <td>99 456 789</td>
-                    <td>Basketball Pack</td>
-                    <td>18/11/2024</td>
-                    <td>
-                      <span class="status--denied">Inactif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=9"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-
-                  <tr class="tr-shadow" data-status="Inactif">
-                    <td>
-                      <label class="au-checkbox">
-                        <input type="checkbox" class="row-checkbox"/>
-                        <span class="au-checkmark"></span>
-                      </label>
-                    </td>
-                    <td>Ines Mrad</td>
-                    <td>
-                      <span class="block-email">ines.mrad@gmail.com</span>
-                    </td>
-                    <td>52 789 012</td>
-                    <td>Accès Libre Adulte</td>
-                    <td>25/10/2024</td>
-                    <td>
-                      <span class="status--denied">Inactif</span>
-                    </td>
-                    <td>
-                      <div class="table-data-feature">
-                        <a
-                          href="abonne-details.html?id=10"
-                          class="item"
-                          title="Voir"
-                        >
-                          <i class="zmdi zmdi-eye"></i>
-                        </a>
-                        <button class="item" title="Modifier"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editMemberModal">
-                          <i class="zmdi zmdi-edit"></i>
-                        </button>
-                        <button class="item" title="Supprimer"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteMemberModal">
-                          <i class="zmdi zmdi-delete"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="spacer"></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <!-- END MAIN CONTENT-->
-      </div>
-      <!-- END PAGE CONTAINER-->
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom, email, téléphone..."
+             oninput="filterTable()">
     </div>
+    <select id="filterStatut" class="form-group" style="margin:0;padding:10px 14px;border:2px solid #e9ecef;border-radius:8px;font-size:0.95rem" onchange="filterTable()">
+      <option value="">Tous les statuts</option>
+      <option value="actif">Actifs</option>
+      <option value="inactif">Inactifs</option>
+      <option value="suspendu">Suspendus</option>
+    </select>
+    <button class="btn-add-member" onclick="openAdd()">
+      <i class="fas fa-plus me-1"></i> Ajouter un membre
+    </button>
+  </div>
 
-    <!-- MODAL AJOUTER ABONNÉ -->
-    <div
-      class="modal fade"
-      id="addMemberModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addMemberModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addMemberModalLabel">
-              Ajouter un Nouvel Abonné
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="nom" class="form-label">Nom Complet *</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nom"
-                      placeholder="Ex: Ahmed Ben Ali"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      placeholder="exemple@email.com"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="telephone" class="form-label"
-                      >Téléphone *</label
-                    >
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="telephone"
-                      placeholder="Ex: 20 123 456"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="dateNaissance" class="form-label"
-                      >Date de Naissance</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="dateNaissance"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="typeAbonnement" class="form-label"
-                      >Type d'Abonnement *</label
-                    >
-                    <select class="form-select" id="typeAbonnement" required>
-                      <option value="">Sélectionner...</option>
-                      <optgroup label="Gym">
-                        <option value="gym-mensuel">
-                          Gym Mensuel - 180 DT
-                        </option>
-                        <option value="gym-trimestriel">
-                          Gym Trimestriel - 450 DT
-                        </option>
-                        <option value="gym-semestriel">
-                          Gym Semestriel - 750 DT
-                        </option>
-                        <option value="gym-annuel">Gym Annuel - 1300 DT</option>
-                      </optgroup>
-                      <optgroup label="Coaching Privée">
-                        <option value="coaching-individuel">
-                          Individuel - 30 DT/séance
-                        </option>
-                        <option value="coaching-groupe2">
-                          Groupe de 2 - 50 DT/séance
-                        </option>
-                        <option value="coaching-groupe3">
-                          Groupe de 3 - 60 DT/séance
-                        </option>
-                        <option value="coaching-groupe4">
-                          Groupe de 4 - 70 DT/séance
-                        </option>
-                      </optgroup>
-                      <optgroup label="Accès Libre">
-                        <option value="libre-adulte">
-                          Adultes - 40 DT/séance
-                        </option>
-                        <option value="libre-enfant">
-                          Enfants - 20 DT/séance
-                        </option>
-                      </optgroup>
-                      <optgroup label="Kids">
-                        <option value="kids-mensuel">
-                          Kids Mensuel - 150 DT
-                        </option>
-                        <option value="kids-trimestriel">
-                          Kids Trimestriel - 350 DT
-                        </option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="dateDebut" class="form-label"
-                      >Date de Début *</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="dateDebut"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Annuler
-            </button>
-            <button type="button" class="btn btn-primary">Enregistrer</button>
-          </div>
-        </div>
-      </div>
+  <!-- Members table -->
+  <div class="members-card">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Membre</th>
+            <th>Contact</th>
+            <th>Abonnement</th>
+            <th>Expiration</th>
+            <th>Statut</th>
+            <th>Inscrit le</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="membersTbody">
+          <tr class="empty-row"><td colspan="7">
+            <i class="fas fa-spinner fa-spin fa-2x mb-2" style="display:block"></i>
+            Chargement...
+          </td></tr>
+        </tbody>
+      </table>
     </div>
-    <!-- END MODAL -->
+  </div>
+  <div id="countLabel" style="margin-top:10px;color:#6c757d;font-size:0.85rem;text-align:right"></div>
 
-    <!-- MODAL SUPPRIMER ABONNÉ -->
-     <div class="modal fade" id="deleteMemberModal" tabindex="-1">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <h5>Supprimer cet abonné ?</h5>
-                <p>Cette action est irréversible.</p>
-                <button class="btn btn-danger">Supprimer</button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-            </div>
-        </div>
-    </div>
 </div>
 
-<!-- MODAL MODIFIER ABONNÉ -->
-
-<div class="modal fade" id="editMemberModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modifier l’abonné</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Nom complet</label>
-                    <input type="text" class="form-control" value="Ali Ben Salah">
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" value="ali@gmail.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Téléphone</label>
-                    <input type="text" class="form-control" value="22 345 678">
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button class="btn btn-primary">Enregistrer</button>
-            </div>
-        </div>
+<!-- ── Add / Edit Modal ── -->
+<div id="formModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-top">
+      <h2 id="formTitle">Ajouter un membre</h2>
+      <button class="btn-close-x" onclick="closeForm()">×</button>
     </div>
+    <input type="hidden" id="m_id">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nom Complet *</label>
+        <input type="text" id="m_nom" placeholder="Ahmed Ben Ali" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="m_email" placeholder="ahmed@email.com">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Téléphone *</label>
+        <input type="tel" id="m_tel" placeholder="22 000 000" required>
+      </div>
+      <div class="form-group">
+        <label>Date de Naissance</label>
+        <input type="date" id="m_dob">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Statut</label>
+        <select id="m_statut">
+          <option value="actif">Actif</option>
+          <option value="inactif">Inactif</option>
+          <option value="suspendu">Suspendu</option>
+        </select>
+      </div>
+      <div class="form-group" id="aboGroup">
+        <label>Type d'Abonnement</label>
+        <select id="m_type">
+          <option value="">Aucun</option>
+          <option value="Gym Mensuel">Gym Mensuel — 180 DT</option>
+          <option value="Gym Trimestriel">Gym Trimestriel — 450 DT</option>
+          <option value="Gym Annuel">Gym Annuel — 1300 DT</option>
+          <option value="Coaching Privé">Coaching Privé — 300 DT</option>
+          <option value="Coaching Groupe">Coaching Groupe — 180 DT</option>
+          <option value="Accès Libre">Accès Libre — 80 DT</option>
+          <option value="Padel Séance">Padel Séance — 30 DT</option>
+          <option value="Padel Pack 5">Padel Pack 5 — 120 DT</option>
+          <option value="Basketball Mensuel">Basketball Mensuel — 150 DT</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" id="dateDebutGroup">
+      <label>Date de début d'abonnement</label>
+      <input type="date" id="m_debut">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeForm()">Annuler</button>
+      <button class="btn-primary" id="btnSaveMember" onclick="saveMember()">
+        <i class="fas fa-save me-1"></i> Enregistrer
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- SCRIPT OF THE FILTERS -->
+<!-- ── Delete Modal ── -->
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-top">
+      <h2>Confirmer la suppression</h2>
+      <button class="btn-close-x" onclick="closeDelete()">×</button>
+    </div>
+    <p style="color:#495057">
+      Supprimer ce membre supprimera aussi tous ses abonnements et historique.<br>
+      <strong>Cette action est irréversible.</strong>
+    </p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeDelete()">Annuler</button>
+      <button class="btn-danger"    onclick="confirmDelete()">
+        <i class="fas fa-trash me-1"></i> Supprimer définitivement
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const filter = document.getElementById('statusFilter');
+const API = 'http://localhost/JSproject/Club_Sportif/shared-backend/api/members.php';
 
-  filter.addEventListener('change', function () {
-    const selectedStatus = this.value;
-    const rows = document.querySelectorAll('tbody tr.tr-shadow');
+let allMembers  = [];
+let toDeleteId  = null;
 
-    rows.forEach(row => {
-      const rowStatus = row.dataset.status;
+// ── Boot ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', loadMembers);
 
-      if (!selectedStatus || rowStatus === selectedStatus) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
+async function loadMembers() {
+  try {
+    const res  = await fetch(API);
+    const json = await res.json();
+    allMembers = json.data || [];
+    renderStats();
+    filterTable();
+  } catch(e) {
+    document.getElementById('membersTbody').innerHTML =
+      '<tr class="empty-row"><td colspan="7">⚠️ Impossible de joindre l\'API. Laragon actif ?</td></tr>';
+  }
+}
+
+// ── Stats ─────────────────────────────────────────────────────────
+function renderStats() {
+  const today   = new Date();
+  const in7days = new Date(); in7days.setDate(today.getDate() + 7);
+
+  const actifs  = allMembers.filter(m => m.statut === 'actif').length;
+  const inactifs= allMembers.filter(m => m.statut !== 'actif').length;
+  const expiring= allMembers.filter(m => {
+    if (!m.date_fin) return false;
+    const fin = new Date(m.date_fin);
+    return fin >= today && fin <= in7days;
+  }).length;
+
+  document.getElementById('sTotal').textContent   = allMembers.length;
+  document.getElementById('sActif').textContent   = actifs;
+  document.getElementById('sExpire').textContent  = expiring;
+  document.getElementById('sInactif').textContent = inactifs;
+}
+
+// ── Render / Filter ───────────────────────────────────────────────
+function filterTable() {
+  const q   = document.getElementById('searchInput').value.toLowerCase();
+  const st  = document.getElementById('filterStatut').value;
+  const filtered = allMembers.filter(m => {
+    const matchQ  = !q || [m.nom, m.email, m.telephone].some(v => (v||'').toLowerCase().includes(q));
+    const matchSt = !st || m.statut === st;
+    return matchQ && matchSt;
+  });
+  renderTable(filtered);
+  document.getElementById('countLabel').textContent =
+    `${filtered.length} membre${filtered.length !== 1 ? 's' : ''} affiché${filtered.length !== 1 ? 's' : ''}`;
+}
+
+function renderTable(members) {
+  const tbody = document.getElementById('membersTbody');
+  if (!members.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7"><i class="fas fa-search fa-2x mb-2" style="display:block;opacity:.3"></i>Aucun membre trouvé</td></tr>';
+    return;
+  }
+  const today = new Date();
+  tbody.innerHTML = members.map(m => {
+    const initials  = (m.nom || '?').split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
+    const finDate   = m.date_fin ? new Date(m.date_fin) : null;
+    const daysLeft  = finDate ? Math.ceil((finDate - today) / 86400000) : null;
+    const expiryHtml= finDate
+      ? (daysLeft <= 7
+          ? `<span class="expiry-warning"><i class="fas fa-exclamation-triangle me-1"></i>${formatDate(m.date_fin)} (${daysLeft}j)</span>`
+          : `<span class="expiry-ok">${formatDate(m.date_fin)}</span>`)
+      : '<span style="color:#aaa">—</span>';
+
+    const statutBadge = {
+      actif:    'badge-actif',
+      inactif:  'badge-inactif',
+      suspendu: 'badge-suspendu'
+    }[m.statut] || 'badge-inactif';
+
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="member-avatar">${initials}</div>
+            <div>
+              <div class="member-name">${esc(m.nom)}</div>
+              <div class="member-contact">ID #${m.id}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div>${esc(m.telephone || '—')}</div>
+          <div class="member-contact">${esc(m.email || '—')}</div>
+        </td>
+        <td>
+          ${m.type_abonnement
+            ? `<span class="badge-abo">${esc(m.type_abonnement)}</span>`
+            : `<span class="badge-no-abo">Sans abonnement</span>`}
+        </td>
+        <td>${expiryHtml}</td>
+        <td><span class="badge-statut ${statutBadge}">${esc(m.statut)}</span></td>
+        <td style="font-size:0.85rem;color:#6c757d">${formatDate(m.date_inscription)}</td>
+        <td style="text-align:right">
+          <button class="btn-action btn-action-edit me-1" onclick="openEdit(${m.id})">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn-action btn-action-delete" onclick="askDelete(${m.id})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ── Add modal ────────────────────────────────────────────────────
+function openAdd() {
+  clearForm();
+  document.getElementById('formTitle').textContent = 'Ajouter un membre';
+  document.getElementById('aboGroup').style.display     = '';
+  document.getElementById('dateDebutGroup').style.display = '';
+  document.getElementById('formModal').classList.add('active');
+}
+
+// ── Edit modal ───────────────────────────────────────────────────
+function openEdit(id) {
+  const m = allMembers.find(x => x.id == id);
+  if (!m) return;
+  clearForm();
+  document.getElementById('formTitle').textContent = 'Modifier le membre';
+  document.getElementById('m_id').value     = m.id;
+  document.getElementById('m_nom').value    = m.nom;
+  document.getElementById('m_email').value  = m.email || '';
+  document.getElementById('m_tel').value    = m.telephone || '';
+  document.getElementById('m_dob').value    = m.date_naissance || '';
+  document.getElementById('m_statut').value = m.statut || 'actif';
+  // Hide subscription fields on edit (managed separately)
+  document.getElementById('aboGroup').style.display      = 'none';
+  document.getElementById('dateDebutGroup').style.display = 'none';
+  document.getElementById('formModal').classList.add('active');
+}
+
+function closeForm()  { document.getElementById('formModal').classList.remove('active'); }
+function clearForm()  {
+  ['m_id','m_nom','m_email','m_tel','m_dob','m_debut'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('m_statut').value = 'actif';
+  document.getElementById('m_type').value   = '';
+}
+
+// ── Save ─────────────────────────────────────────────────────────
+async function saveMember() {
+  const id  = document.getElementById('m_id').value;
+  const nom = document.getElementById('m_nom').value.trim();
+  const tel = document.getElementById('m_tel').value.trim();
+
+  if (!nom || !tel) { showToast('Nom et téléphone sont obligatoires.', 'warning'); return; }
+
+  const payload = {
+    id:               id ? parseInt(id) : undefined,
+    nom,
+    email:            document.getElementById('m_email').value.trim() || null,
+    telephone:        tel,
+    date_naissance:   document.getElementById('m_dob').value || null,
+    statut:           document.getElementById('m_statut').value,
+    type_abonnement:  document.getElementById('m_type')?.value || undefined,
+    date_debut:       document.getElementById('m_debut')?.value || undefined,
+  };
+
+  const btn = document.getElementById('btnSaveMember');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Enregistrement...';
+
+  try {
+    const res    = await fetch(API, {
+      method:  id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
     });
+    const result = await res.json();
+
+    if (result.success) {
+      closeForm();
+      await loadMembers();
+      showToast(id ? '✅ Membre mis à jour !' : '✅ Membre ajouté !', 'success');
+    } else {
+      showToast('Erreur: ' + (result.error || 'inconnue'), 'danger');
+    }
+  } catch(e) {
+    showToast('Impossible de joindre l\'API.', 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save me-1"></i> Enregistrer';
+  }
+}
+
+// ── Delete ───────────────────────────────────────────────────────
+function askDelete(id) {
+  toDeleteId = id;
+  document.getElementById('deleteModal').classList.add('active');
+}
+function closeDelete() {
+  document.getElementById('deleteModal').classList.remove('active');
+  toDeleteId = null;
+}
+async function confirmDelete() {
+  if (!toDeleteId) return;
+  try {
+    const res = await fetch(API, {
+      method:  'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ id: toDeleteId })
+    });
+    const result = await res.json();
+    if (result.success) {
+      closeDelete();
+      await loadMembers();
+      showToast('🗑️ Membre supprimé.', 'success');
+    }
+  } catch(e) {
+    showToast('Impossible de joindre l\'API.', 'danger');
+  }
+}
+
+// ── Helpers ──────────────────────────────────────────────────────
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function formatDate(str) {
+  if (!str) return '—';
+  const [y, m, d] = str.split('-');
+  return `${d}/${m}/${y}`;
+}
+function showToast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.className = `alert alert-${type} position-fixed bottom-0 end-0 m-3 shadow`;
+  t.style.cssText = 'z-index:9999;min-width:280px';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// Backdrop close
+['formModal','deleteModal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.target.classList.remove('active');
   });
 });
 </script>
-
-<!-- SCRIPT OF THE selectAll -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const selectAll = document.getElementById('selectAll');
-  const rowCheckboxes = document.querySelectorAll('.row-checkbox');
-
-  // Quand on clique sur "Select All"
-  selectAll.addEventListener('change', function () {
-    rowCheckboxes.forEach(cb => {
-      cb.checked = this.checked;
-    });
-  });
-
-  // Si on décoche une ligne → Select All se décoche
-  rowCheckboxes.forEach(cb => {
-    cb.addEventListener('change', function () {
-      if (!this.checked) {
-        selectAll.checked = false;
-      } else {
-        // Si TOUT est coché → Select All se coche
-        const allChecked = [...rowCheckboxes].every(c => c.checked);
-        selectAll.checked = allChecked;
-      }
-    });
-  });
-});
-</script>
-
-
-    <!-- Jquery JS-->
-    <script src="js/vanilla-utils.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-5.3.8.bundle.min.js"></script>
-    <!-- Vendor JS -->
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar-1.5.6.min.js"></script>
-    <script src="vendor/chartjs/chart.umd.js-4.5.1.min.js"></script>
-
-    <!-- Main JS-->
-    <script src="js/bootstrap5-init.js"></script>
-    <script src="js/main-vanilla.js"></script>
-    <script src="js/swiper-bundle-12.0.3.min.js"></script>
-    <script src="js/aos.js"></script>
-    <script src="js/modern-plugins.js"></script>
-  </body>
+</body>
 </html>
