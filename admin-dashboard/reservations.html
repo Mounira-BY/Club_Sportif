@@ -717,6 +717,67 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-lg-12">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
+                                            <div>
+                                                <h3 class="title-2">Gestion des Réservations</h3>
+                                                <p class="text-muted mb-0">Consultez, modifiez et supprimez les réservations enregistrées.</p>
+                                            </div>
+                                            <button class="au-btn au-btn-icon au-btn--blue" onclick="openReservationForm()">
+                                                <i class="zmdi zmdi-plus"></i>Nouvelle Réservation
+                                            </button>
+                                        </div>
+
+                                        <div class="row mb-3 gy-3">
+                                            <div class="col-md-4">
+                                                <input id="reservationSearch" class="form-control" type="search" placeholder="Rechercher par client, activité ou salle" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select id="filterActivity" class="form-select">
+                                                    <option value="">Toutes les activités</option>
+                                                    <option value="Terrain Padel">Terrain Padel</option>
+                                                    <option value="Terrain Basketball">Terrain Basketball</option>
+                                                    <option value="Coaching Privé">Coaching Privé</option>
+                                                    <option value="Coaching Groupe">Coaching Groupe</option>
+                                                    <option value="Salle de Gym">Salle de Gym</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select id="filterStatus" class="form-select">
+                                                    <option value="">Tous statuts</option>
+                                                    <option value="confirmee">Confirmée</option>
+                                                    <option value="en_attente">En attente</option>
+                                                    <option value="annulee">Annulée</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Début</th>
+                                                        <th>Fin</th>
+                                                        <th>Activité</th>
+                                                        <th>Client</th>
+                                                        <th>Salle</th>
+                                                        <th>Statut</th>
+                                                        <th class="text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="reservationsTbody">
+                                                    <tr><td colspan="8" class="text-center text-muted py-4">Chargement des réservations...</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
                                     <p>Copyright © 2024 Smart GYM. Tous droits réservés.</p>
@@ -748,404 +809,344 @@
     <script src="js/aos.js"></script>
     <script src="js/modern-plugins.js"></script>
 
-    <!-- Calendar Initialization -->
+    <!-- Reservation Modal -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Nouvelle réservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservationForm">
+                        <input type="hidden" id="r_id" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Activité</label>
+                                <select id="r_activite" class="form-select" required>
+                                    <option value="">Sélectionner une activité</option>
+                                    <option value="Terrain Padel">Terrain Padel</option>
+                                    <option value="Terrain Basketball">Terrain Basketball</option>
+                                    <option value="Coaching Privé">Coaching Privé</option>
+                                    <option value="Coaching Groupe">Coaching Groupe</option>
+                                    <option value="Salle de Gym">Salle de Gym</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Salle</label>
+                                <input id="r_salle" type="text" class="form-control" placeholder="Par exemple : Terrain A" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date</label>
+                                <input id="r_date_reservation" type="date" class="form-control" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Heure début</label>
+                                <input id="r_heure_debut" type="time" class="form-control" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Heure fin</label>
+                                <input id="r_heure_fin" type="time" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Client</label>
+                                <select id="r_membre_id" class="form-select">
+                                    <option value="">Aucun membre sélectionné</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Statut</label>
+                                <select id="r_statut" class="form-select" required>
+                                    <option value="confirmee">Confirmée</option>
+                                    <option value="en_attente">En attente</option>
+                                    <option value="annulee">Annulée</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" id="btnSaveReservation" class="btn btn-primary" onclick="saveReservation()">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+    const API = 'http://localhost/JSproject/Club_Sportif/shared-backend/api/reservations.php';
+    const MEMBERS_API = 'http://localhost/JSproject/Club_Sportif/shared-backend/api/members.php';
+    let reservations = [];
+    let membersList = [];
+    let calendarInstance = null;
+    let reservationModal = null;
+
     document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar');
-        
-        if (calendarEl) {
-            // Sample reservation events for Smart GYM - BEAUCOUP DE RÉSERVATIONS
-            const events = [
-                // Semaine 1 - 16-22 Décembre
-                {
-                    title: 'Terrain Padel - Ahmed Ben Ali',
-                    start: '2024-12-16T18:00:00',
-                    end: '2024-12-16T20:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Ahmed Ben Ali', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Privé - Fatma Trabelsi',
-                    start: '2024-12-17T10:00:00',
-                    end: '2024-12-17T11:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Fatma Trabelsi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Basketball - Mohamed Jebali',
-                    start: '2024-12-18T16:00:00',
-                    end: '2024-12-18T18:00:00',
-                    backgroundColor: '#17a2b8',
-                    borderColor: '#17a2b8',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'basketball', client: 'Mohamed Jebali', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Groupe - Sara Miled',
-                    start: '2024-12-19T09:00:00',
-                    end: '2024-12-19T10:30:00',
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    textColor: '#000000',
-                    extendedProps: { type: 'coaching_groupe', client: 'Sara Miled', status: 'Confirmé' }
-                },
-                {
-                    title: 'Salle de Gym - Walid Elloumi',
-                    start: '2024-12-20T14:00:00',
-                    end: '2024-12-20T15:30:00',
-                    backgroundColor: '#dc3545',
-                    borderColor: '#dc3545',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'gym', client: 'Walid Elloumi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Padel - Slim Gharbi',
-                    start: '2024-12-21T19:00:00',
-                    end: '2024-12-21T21:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Slim Gharbi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Privé - Nour Hamdi',
-                    start: '2024-12-22T11:00:00',
-                    end: '2024-12-22T12:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Nour Hamdi', status: 'Confirmé' }
-                },
+        reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
+        document.getElementById('reservationSearch').addEventListener('input', filterReservations);
+        document.getElementById('filterActivity').addEventListener('change', filterReservations);
+        document.getElementById('filterStatus').addEventListener('change', filterReservations);
+        document.getElementById('reservationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            saveReservation();
+        });
 
-                // Semaine 2 - 23-29 Décembre
-                {
-                    title: 'Terrain Basketball - Karim Mejri',
-                    start: '2024-12-23T15:00:00',
-                    end: '2024-12-23T17:00:00',
-                    backgroundColor: '#17a2b8',
-                    borderColor: '#17a2b8',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'basketball', client: 'Karim Mejri', status: 'En Attente' }
-                },
-                {
-                    title: 'Coaching Groupe - Yasmine Khaled',
-                    start: '2024-12-24T08:00:00',
-                    end: '2024-12-24T09:30:00',
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    textColor: '#000000',
-                    extendedProps: { type: 'coaching_groupe', client: 'Yasmine Khaled', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Padel - Mehdi Bouazizi',
-                    start: '2024-12-25T17:00:00',
-                    end: '2024-12-25T19:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Mehdi Bouazizi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Salle de Gym - Ines Ben Salah',
-                    start: '2024-12-26T13:00:00',
-                    end: '2024-12-26T14:30:00',
-                    backgroundColor: '#dc3545',
-                    borderColor: '#dc3545',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'gym', client: 'Ines Ben Salah', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Privé - Omar Khlifi',
-                    start: '2024-12-27T10:00:00',
-                    end: '2024-12-27T11:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Omar Khlifi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Basketball - Amira Toumi',
-                    start: '2024-12-28T16:00:00',
-                    end: '2024-12-28T18:00:00',
-                    backgroundColor: '#17a2b8',
-                    borderColor: '#17a2b8',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'basketball', client: 'Amira Toumi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Groupe - Bilel Ghribi',
-                    start: '2024-12-29T09:00:00',
-                    end: '2024-12-29T10:30:00',
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    textColor: '#000000',
-                    extendedProps: { type: 'coaching_groupe', client: 'Bilel Ghribi', status: 'Confirmé' }
-                },
-
-                // Semaine 3 - 30 Déc - 5 Jan
-                {
-                    title: 'Terrain Padel - Mariem Jlassi',
-                    start: '2024-12-30T18:00:00',
-                    end: '2024-12-30T20:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Mariem Jlassi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Salle de Gym - Houssem Dridi',
-                    start: '2024-12-31T12:00:00',
-                    end: '2024-12-31T13:30:00',
-                    backgroundColor: '#dc3545',
-                    borderColor: '#dc3545',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'gym', client: 'Houssem Dridi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Privé - Sarra Bouaziz',
-                    start: '2025-01-02T11:00:00',
-                    end: '2025-01-02T12:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Sarra Bouaziz', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Basketball - Fares Monastiri',
-                    start: '2025-01-03T15:00:00',
-                    end: '2025-01-03T17:00:00',
-                    backgroundColor: '#17a2b8',
-                    borderColor: '#17a2b8',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'basketball', client: 'Fares Monastiri', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Groupe - Donia Ghariani',
-                    start: '2025-01-04T09:00:00',
-                    end: '2025-01-04T10:30:00',
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    textColor: '#000000',
-                    extendedProps: { type: 'coaching_groupe', client: 'Donia Ghariani', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Padel - Aymen Saidi',
-                    start: '2025-01-05T19:00:00',
-                    end: '2025-01-05T21:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Aymen Saidi', status: 'En Attente' }
-                },
-
-                // Plus de réservations - Matinées
-                {
-                    title: 'Coaching Privé - Leila Mansour',
-                    start: '2024-12-16T08:00:00',
-                    end: '2024-12-16T09:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Leila Mansour', status: 'Confirmé' }
-                },
-                {
-                    title: 'Salle de Gym - Anis Zouari',
-                    start: '2024-12-17T07:00:00',
-                    end: '2024-12-17T08:30:00',
-                    backgroundColor: '#dc3545',
-                    borderColor: '#dc3545',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'gym', client: 'Anis Zouari', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Padel - Sami Ferchichi',
-                    start: '2024-12-18T07:30:00',
-                    end: '2024-12-18T09:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Sami Ferchichi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Groupe - Hana Chaabane',
-                    start: '2024-12-19T06:30:00',
-                    end: '2024-12-19T08:00:00',
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    textColor: '#000000',
-                    extendedProps: { type: 'coaching_groupe', client: 'Hana Chaabane', status: 'Confirmé' }
-                },
-
-                // Après-midis supplémentaires
-                {
-                    title: 'Terrain Basketball - Rami Sassi',
-                    start: '2024-12-20T14:00:00',
-                    end: '2024-12-20T16:00:00',
-                    backgroundColor: '#17a2b8',
-                    borderColor: '#17a2b8',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'basketball', client: 'Rami Sassi', status: 'Confirmé' }
-                },
-                {
-                    title: 'Coaching Privé - Cedric Kelly',
-                    start: '2024-12-21T15:00:00',
-                    end: '2024-12-21T16:00:00',
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'coaching_prive', client: 'Cedric Kelly', status: 'Confirmé' }
-                },
-                {
-                    title: 'Salle de Gym - Airi Satou',
-                    start: '2024-12-22T16:00:00',
-                    end: '2024-12-22T17:30:00',
-                    backgroundColor: '#dc3545',
-                    borderColor: '#dc3545',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'gym', client: 'Airi Satou', status: 'Confirmé' }
-                },
-                {
-                    title: 'Terrain Padel - Brielle Williamson',
-                    start: '2024-12-23T20:00:00',
-                    end: '2024-12-23T22:00:00',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745',
-                    textColor: '#ffffff',
-                    extendedProps: { type: 'padel', client: 'Brielle Williamson', status: 'Confirmé' }
-                }
-            ];
-
-            // Initialize FullCalendar v6+
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'fr',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                },
-                buttonText: {
-                    today: 'Aujourd\'hui',
-                    month: 'Mois',
-                    week: 'Semaine',
-                    day: 'Jour',
-                    list: 'Liste'
-                },
-                height: 'auto',
-                events: events,
-                eventDisplay: 'block',
-                dayMaxEvents: 3,
-                moreLinkText: function(num) {
-                    return '+ ' + num + ' autre' + (num > 1 ? 's' : '');
-                },
-                
-                // Event click handler
-                eventClick: function(info) {
-                    const event = info.event;
-                    const props = event.extendedProps;
-                    
-                    const startTime = event.start ? event.start.toLocaleString('fr-FR', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }) : 'N/A';
-                    
-                    const endTime = event.end ? event.end.toLocaleTimeString('fr-FR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }) : 'N/A';
-                    
-                    alert(`📅 ${event.title}\n\n` +
-                          `👤 Client: ${props.client || 'N/A'}\n` +
-                          `📋 Type: ${props.type || 'N/A'}\n` +
-                          `✅ Statut: ${props.status || 'N/A'}\n` +
-                          `📝 Description: ${props.description || 'Aucune description'}\n\n` +
-                          `🕐 Début: ${startTime}\n` +
-                          `🕐 Fin: ${endTime}`);
-                },
-                
-                // Date click handler for adding new reservations
-                dateClick: function(info) {
-                    const confirmation = confirm('Voulez-vous créer une nouvelle réservation pour le ' + 
-                                                info.dateStr + ' ?');
-                    if (confirmation) {
-                        addNewReservation(info.date);
-                    }
-                },
-                
-                // Responsive behavior
-                windowResize: function() {
-                    calendar.updateSize();
-                }
-            });
-
-            calendar.render();
-            
-            // Store calendar instance globally for external access
-            window.calendarInstance = calendar;
-        }
+        loadMembersList();
+        initializeCalendar();
+        loadReservations();
     });
-    
-    // Function for "Add Reservation" button
-    function addNewReservation(date) {
-        const client = prompt('Nom du client:');
-        if (!client) return;
-        
-        const type = prompt('Type de réservation:\n1. Terrain Padel\n2. Terrain Basketball\n3. Coaching Privé\n4. Coaching Groupe\n5. Salle de Gym');
-        if (!type) return;
-        
-        let backgroundColor, typeText;
-        switch(type) {
-            case '1':
-                backgroundColor = '#28a745';
-                typeText = 'Terrain Padel';
-                break;
-            case '2':
-                backgroundColor = '#17a2b8';
-                typeText = 'Terrain Basketball';
-                break;
-            case '3':
-                backgroundColor = '#007bff';
-                typeText = 'Coaching Privé';
-                break;
-            case '4':
-                backgroundColor = '#ffc107';
-                typeText = 'Coaching Groupe';
-                break;
-            case '5':
-                backgroundColor = '#dc3545';
-                typeText = 'Salle de Gym';
-                break;
-            default:
-                backgroundColor = '#6c757d';
-                typeText = 'Autre';
+
+    async function loadMembersList() {
+        try {
+            const res = await fetch(MEMBERS_API);
+            const json = await res.json();
+            membersList = json.data || [];
+            const select = document.getElementById('r_membre_id');
+            select.innerHTML = '<option value="">Aucun membre sélectionné</option>' + membersList.map(member => `
+                <option value="${member.id}">${member.nom} ${member.email ? '– ' + member.email : ''}</option>`
+            ).join('');
+        } catch (err) {
+            console.error('Impossible de charger les membres', err);
         }
-        
-        if (window.calendarInstance) {
-            const eventDate = date || new Date();
-            window.calendarInstance.addEvent({
-                title: `${typeText} - ${client}`,
-                start: eventDate,
-                backgroundColor: backgroundColor,
-                borderColor: backgroundColor,
+    }
+
+    async function loadReservations() {
+        try {
+            const res = await fetch(API);
+            const json = await res.json();
+            if (!json.success) {
+                showAlertRow('Impossible de charger les réservations.');
+                return;
+            }
+            reservations = json.data || [];
+            filterReservations();
+            renderCalendarEvents(reservations);
+        } catch (err) {
+            console.error(err);
+            showAlertRow('Impossible de joindre l\'API des réservations.');
+        }
+    }
+
+    function showAlertRow(message) {
+        document.getElementById('reservationsTbody').innerHTML = `
+            <tr><td colspan="8" class="text-center text-muted py-4">${message}</td></tr>`;
+    }
+
+    function filterReservations() {
+        const query = document.getElementById('reservationSearch').value.toLowerCase();
+        const activity = document.getElementById('filterActivity').value;
+        const status = document.getElementById('filterStatus').value;
+
+        const filtered = reservations.filter(r => {
+            const text = [r.activite, r.salle, r.membre_nom].join(' ').toLowerCase();
+            const matchesQuery = !query || text.includes(query);
+            const matchesActivity = !activity || r.activite === activity;
+            const matchesStatus = !status || r.statut === status;
+            return matchesQuery && matchesActivity && matchesStatus;
+        });
+        renderReservationsTable(filtered);
+    }
+
+    function renderReservationsTable(items) {
+        const tbody = document.getElementById('reservationsTbody');
+        if (!items.length) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">Aucune réservation trouvée.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = items.map(r => {
+            return `
+                <tr>
+                    <td>${formatDate(r.date_reservation)}</td>
+                    <td>${r.heure_debut || '—'}</td>
+                    <td>${r.heure_fin || '—'}</td>
+                    <td>${esc(r.activite)}</td>
+                    <td>${esc(r.membre_nom || 'Non assigné')}</td>
+                    <td>${esc(r.salle || '—')}</td>
+                    <td>${renderStatusBadge(r.statut)}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="openReservationForm(${r.id})">Modifier</button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteReservation(${r.id})">Supprimer</button>
+                    </td>
+                </tr>`;
+        }).join('');
+    }
+
+    function renderStatusBadge(statut) {
+        const labels = {
+            confirmee: '<span class="badge bg-success">Confirmée</span>',
+            en_attente: '<span class="badge bg-warning text-dark">En attente</span>',
+            annulee: '<span class="badge bg-danger">Annulée</span>'
+        };
+        return labels[statut] || '<span class="badge bg-secondary">' + esc(statut) + '</span>';
+    }
+
+    function initializeCalendar() {
+        const calendarEl = document.getElementById('calendar');
+        if (!calendarEl) return;
+
+        calendarInstance = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            buttonText: {
+                today: 'Aujourd\'hui',
+                month: 'Mois',
+                week: 'Semaine',
+                day: 'Jour',
+                list: 'Liste'
+            },
+            height: 'auto',
+            eventDisplay: 'block',
+            dayMaxEvents: 3,
+            eventClick: function(info) {
+                const id = parseInt(info.event.id, 10);
+                openReservationForm(id);
+            },
+            dateClick: function(info) {
+                openReservationForm(null, info.dateStr);
+            },
+            windowResize: function() {
+                calendarInstance.updateSize();
+            }
+        });
+
+        calendarInstance.render();
+    }
+
+    function renderCalendarEvents(items) {
+        if (!calendarInstance) return;
+        calendarInstance.removeAllEvents();
+        items.forEach(r => {
+            const start = `${r.date_reservation}T${r.heure_debut}`;
+            const end = r.heure_fin ? `${r.date_reservation}T${r.heure_fin}` : undefined;
+            calendarInstance.addEvent({
+                id: r.id,
+                title: `${r.activite}${r.membre_nom ? ' - ' + r.membre_nom : ''}`,
+                start,
+                end,
+                backgroundColor: activityColor(r.activite),
+                borderColor: activityColor(r.activite),
                 textColor: '#ffffff',
                 extendedProps: {
-                    type: typeText.toLowerCase(),
-                    client: client,
-                    status: 'En Attente',
-                    description: 'Nouvelle réservation créée'
+                    salle: r.salle,
+                    statut: r.statut
                 }
             });
-            
-            alert('✅ Réservation ajoutée avec succès pour ' + client);
+        });
+    }
+
+    function activityColor(activity) {
+        switch (activity) {
+            case 'Terrain Padel': return '#28a745';
+            case 'Terrain Basketball': return '#17a2b8';
+            case 'Coaching Privé': return '#007bff';
+            case 'Coaching Groupe': return '#ffc107';
+            case 'Salle de Gym': return '#dc3545';
+            default: return '#6c757d';
         }
+    }
+
+    function openReservationForm(reservationId = null, dateReservation = null) {
+        document.getElementById('reservationForm').reset();
+        document.getElementById('r_id').value = '';
+        document.getElementById('reservationModalLabel').textContent = reservationId ? 'Modifier la réservation' : 'Nouvelle réservation';
+
+        if (reservationId) {
+            const reservation = reservations.find(r => Number(r.id) === Number(reservationId));
+            if (!reservation) return;
+            document.getElementById('r_id').value = reservation.id;
+            document.getElementById('r_activite').value = reservation.activite || '';
+            document.getElementById('r_salle').value = reservation.salle || '';
+            document.getElementById('r_date_reservation').value = reservation.date_reservation || '';
+            document.getElementById('r_heure_debut').value = reservation.heure_debut || '';
+            document.getElementById('r_heure_fin').value = reservation.heure_fin || '';
+            document.getElementById('r_membre_id').value = reservation.membre_id || '';
+            document.getElementById('r_statut').value = reservation.statut || 'confirmee';
+        } else {
+            document.getElementById('r_date_reservation').value = dateReservation || new Date().toISOString().slice(0, 10);
+            document.getElementById('r_statut').value = 'confirmee';
+        }
+
+        reservationModal.show();
+    }
+
+    async function saveReservation() {
+        const id = document.getElementById('r_id').value;
+        const payload = {
+            activite: document.getElementById('r_activite').value,
+            salle: document.getElementById('r_salle').value.trim(),
+            date_reservation: document.getElementById('r_date_reservation').value,
+            heure_debut: document.getElementById('r_heure_debut').value,
+            heure_fin: document.getElementById('r_heure_fin').value,
+            membre_id: document.getElementById('r_membre_id').value || null,
+            statut: document.getElementById('r_statut').value
+        };
+
+        if (!payload.activite || !payload.date_reservation || !payload.heure_debut) {
+            alert('Merci de remplir les champs Activité, Date et Heure de début.');
+            return;
+        }
+
+        const button = document.getElementById('btnSaveReservation');
+        button.disabled = true;
+        button.textContent = 'Enregistrement...';
+
+        try {
+            const res = await fetch(API, {
+                method: id ? 'PUT' : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(id ? { id: Number(id), ...payload } : payload)
+            });
+            const json = await res.json();
+            if (!json.success) {
+                alert('Erreur : ' + (json.error || 'Impossible d\'enregistrer la réservation.'));
+                return;
+            }
+            reservationModal.hide();
+            await loadReservations();
+        } catch (err) {
+            console.error(err);
+            alert('Impossible de contacter l\'API de réservation.');
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Enregistrer';
+        }
+    }
+
+    async function deleteReservation(id) {
+        if (!confirm('Voulez-vous vraiment supprimer cette réservation ?')) return;
+        try {
+            const res = await fetch(API, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const json = await res.json();
+            if (!json.success) {
+                alert('Erreur : ' + (json.error || 'Impossible de supprimer la réservation.'));
+                return;
+            }
+            await loadReservations();
+        } catch (err) {
+            console.error(err);
+            alert('Impossible de contacter l\'API de réservation.');
+        }
+    }
+
+    function esc(value) {
+        return String(value || '').replace(/[&<>"]+/g, function(chr) {
+            return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[chr] || chr;
+        });
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
     }
     </script>
 
