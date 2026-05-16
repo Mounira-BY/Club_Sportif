@@ -564,9 +564,6 @@
                                                     <option value="">Toutes les activités</option>
                                                     <option value="Terrain Padel">Terrain Padel</option>
                                                     <option value="Terrain Basketball">Terrain Basketball</option>
-                                                    <option value="Coaching Privé">Coaching Privé</option>
-                                                    <option value="Coaching Groupe">Coaching Groupe</option>
-                                                    <option value="Salle de Gym">Salle de Gym</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
@@ -838,14 +835,13 @@
                                     <option value="">Sélectionner une activité</option>
                                     <option value="Terrain Padel">Terrain Padel</option>
                                     <option value="Terrain Basketball">Terrain Basketball</option>
-                                    <option value="Coaching Privé">Coaching Privé</option>
-                                    <option value="Coaching Groupe">Coaching Groupe</option>
-                                    <option value="Salle de Gym">Salle de Gym</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Salle</label>
-                                <input id="r_salle" type="text" class="form-control" placeholder="Par exemple : Terrain A" />
+                                <select id="r_salle" class="form-select" required>
+                                    <option value="">Sélectionner une salle</option>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Date</label>
@@ -897,6 +893,9 @@
         document.getElementById('reservationSearch').addEventListener('input', filterReservations);
         document.getElementById('filterActivity').addEventListener('change', filterReservations);
         document.getElementById('filterStatus').addEventListener('change', filterReservations);
+        document.getElementById('r_activite').addEventListener('change', function() {
+            updateSalleOptions(this.value);
+        });
         document.getElementById('reservationForm').addEventListener('submit', function(event) {
             event.preventDefault();
             saveReservation();
@@ -919,6 +918,42 @@
         } catch (err) {
             console.error('Impossible de charger les membres', err);
         }
+    }
+
+    const salleOptionsByActivity = {
+        'Terrain Basketball': [
+            { value: 'Terrain Intérieur', label: 'Terrain Intérieur' },
+            { value: 'Terrain Extérieur', label: 'Terrain Extérieur' }
+        ],
+        'Terrain Padel': [
+            { value: 'Padel 1 Extérieur', label: 'Padel 1 Extérieur' },
+            { value: 'Padel 2 Intérieur', label: 'Padel 2 Intérieur' },
+            { value: 'Padel 3 Extérieur', label: 'Padel 3 Extérieur' }
+        ]
+    };
+
+    function updateSalleOptions(activity, selectedValue = '') {
+        const select = document.getElementById('r_salle');
+        const options = salleOptionsByActivity[activity] || [];
+        let html = '<option value="">Sélectionner une salle</option>';
+
+        if (options.length) {
+            options.forEach(opt => {
+                html += `<option value="${opt.value}"${selectedValue === opt.value ? ' selected' : ''}>${opt.label}</option>`;
+            });
+            if (selectedValue && !options.some(opt => opt.value === selectedValue)) {
+                html += `<option value="${selectedValue}" selected>${selectedValue}</option>`;
+            }
+            select.disabled = false;
+        } else {
+            html += '<option value="" disabled>Aucune salle spécifique</option>';
+            if (selectedValue) {
+                html += `<option value="${selectedValue}" selected>${selectedValue}</option>`;
+            }
+            select.disabled = false;
+        }
+
+        select.innerHTML = html;
     }
 
     async function loadReservations() {
@@ -1058,9 +1093,6 @@
         switch (activity) {
             case 'Terrain Padel': return '#28a745';
             case 'Terrain Basketball': return '#17a2b8';
-            case 'Coaching Privé': return '#007bff';
-            case 'Coaching Groupe': return '#ffc107';
-            case 'Salle de Gym': return '#dc3545';
             default: return '#6c757d';
         }
     }
@@ -1075,13 +1107,15 @@
             if (!reservation) return;
             document.getElementById('r_id').value = reservation.id;
             document.getElementById('r_activite').value = reservation.activite || '';
-            document.getElementById('r_salle').value = reservation.salle || '';
+            updateSalleOptions(reservation.activite, reservation.salle || '');
             document.getElementById('r_date_reservation').value = reservation.date_reservation || '';
             document.getElementById('r_heure_debut').value = reservation.heure_debut || '';
             document.getElementById('r_heure_fin').value = reservation.heure_fin || '';
             document.getElementById('r_membre_id').value = reservation.membre_id || '';
             document.getElementById('r_statut').value = reservation.statut || 'confirmee';
         } else {
+            document.getElementById('r_activite').value = '';
+            updateSalleOptions('');
             document.getElementById('r_date_reservation').value = dateReservation || new Date().toISOString().slice(0, 10);
             document.getElementById('r_statut').value = 'confirmee';
         }
