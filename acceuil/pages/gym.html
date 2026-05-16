@@ -294,27 +294,7 @@
         </div>
     </footer>
 
-    <script>
-    fetch("../navbar.html")
-        .then(res => {
-            if (!res.ok) throw new Error('Failed to load navbar');
-            return res.text();
-        })
-        .then(data => {
-            document.getElementById("navbar-placeholder").innerHTML = data;
-            console.log('Navbar loaded successfully');
-            // Adjust paths for local files
-            if (window.location.protocol === 'file:') {
-                const isInPages = window.location.pathname.includes('/pages/');
-                document.querySelectorAll('#navbar-placeholder a').forEach(a => {
-                    if (a.href.startsWith('/')) {
-                        a.href = (isInPages ? '../' : '.') + a.href;
-                    }
-                });
-            }
-        })
-        .catch(err => console.error('Error loading navbar:', err));
-    </script>
+    <script src="../js/include-navbar.js"></script>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/scripts.js"></script>

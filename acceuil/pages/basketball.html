@@ -15,7 +15,7 @@
     <link href="../css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body id="page-top">
+<body id="page-top" data-sport="basketball">
 
     <div id="navbar-placeholder"></div>
 
@@ -58,7 +58,7 @@
                 <div class="col-lg-6">
                     <div class="team-member">
                         <a href="#terrain1-section">
-                            <img class="mx-auto rounded-circle" src="../assets/img/basketball/terrain1.jpg" alt="Terrain 1" 
+                            <img class="mx-auto rounded-circle" src="../assets/img/basketball/terrain1.jpg" alt="Terrain 1"
                                  onerror="this.src='https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80'" />
                         </a>
                         <h4>Terrain Intérieur</h4>
@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
                     <p class="large text-muted">
-                        Nos terrains de basketball sont conçus pour offrir la meilleure expérience de jeu, combinant des surfaces de haute qualité, 
+                        Nos terrains de basketball sont conçus pour offrir la meilleure expérience de jeu, combinant des surfaces de haute qualité,
                         un excellent éclairage et un environnement confortable pour les joueurs de tous niveaux.
                     </p>
                 </div>
@@ -99,10 +99,7 @@
                 <div class="col-6 about-section">
                     <h3>Terrain Intérieur</h3>
                     <h4>Parquet professionnel</h4>
-                    <p>Terrain de basketball intérieur avec parquet en bois professionnel, offrant une excellente adhérence et un rebond optimal du ballon.
-                        Parfait pour les matchs et entraînements toute l'année, quelle que soit la météo. 
-                        Équipé de paniers réglementaires et d'un système d'éclairage LED dernière génération.
-                    </p>
+                    <p>Terrain de basketball intérieur avec parquet en bois professionnel, offrant une excellente adhérence et un rebond optimal du ballon.</p>
                     <ul class="terrain-features">
                         <li><i class="fas fa-check"></i> Climatisation et ventilation</li>
                         <li><i class="fas fa-check"></i> Vestiaires et douches</li>
@@ -121,10 +118,7 @@
                 <div class="col-6 about-section">
                     <h3>Terrain Extérieur</h3>
                     <h4>Revêtement synthétique</h4>
-                    <p>Terrain de basketball extérieur avec revêtement synthétique haute performance, résistant aux intempéries.
-                        Idéal pour les sessions de street basketball et les matchs en plein air. 
-                        Surface antidérapante garantissant sécurité et confort de jeu.
-                    </p>
+                    <p>Terrain de basketball extérieur avec revêtement synthétique haute performance, résistant aux intempéries.</p>
                     <ul class="terrain-features">
                         <li><i class="fas fa-check"></i> Éclairage nocturne puissant</li>
                         <li><i class="fas fa-check"></i> Grillage de protection</li>
@@ -137,24 +131,28 @@
         </div>
     </section>
 
-    <!-- Réservation -->
     <section class="page-section" id="reservation">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Réservation</h2>
                 <h3 class="section-subheading text-muted">Réservez votre terrain de basketball</h3>
             </div>
-            <form id="contactForm">
+
+            <form id="contactForm" novalidate>
                 <div class="row align-items-stretch mb-5">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input class="form-control" id="name" type="text" placeholder="Votre Nom *" required />
+                            <input class="form-control" id="name" type="text"
+                                   placeholder="Votre Nom *" required />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" id="email" type="email" placeholder="Votre Email *" required />
+                            <input class="form-control" id="email" type="email"
+                                   placeholder="Votre Email *" required />
                         </div>
                         <div class="form-group mb-md-0">
-                            <input class="form-control" id="phone" type="tel" placeholder="Votre Téléphone *" required />
+                            <input class="form-control" id="phone" type="tel"
+                                   placeholder="Votre Téléphone *" required
+                                   pattern="[0-9+\s\-]{8,15}" />
                         </div>
                     </div>
 
@@ -162,8 +160,8 @@
                         <div class="form-group">
                             <select class="form-control" id="basketball-court" required>
                                 <option value="" disabled selected>Sélectionnez votre terrain *</option>
-                                <option value="terrain1">Terrain Intérieur - Parquet professionnel</option>
-                                <option value="terrain2">Terrain Extérieur - Revêtement synthétique</option>
+                                <option value="terrain1">Terrain Intérieur – Parquet professionnel</option>
+                                <option value="terrain2">Terrain Extérieur – Revêtement synthétique</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -172,19 +170,19 @@
                         <div class="form-group mb-md-0">
                             <select class="form-control" id="reservation-time" required>
                                 <option value="" disabled selected>Sélectionnez un créneau horaire *</option>
-                                <option value="09:00">09:00 - 10:00</option>
-                                <option value="10:00">10:00 - 11:00</option>
-                                <option value="11:00">11:00 - 12:00</option>
-                                <option value="12:00">12:00 - 13:00</option>
-                                <option value="13:00">13:00 - 14:00</option>
-                                <option value="14:00">14:00 - 15:00</option>
-                                <option value="15:00">15:00 - 16:00</option>
-                                <option value="16:00">16:00 - 17:00</option>
-                                <option value="17:00">17:00 - 18:00</option>
-                                <option value="18:00">18:00 - 19:00</option>
-                                <option value="19:00">19:00 - 20:00</option>
-                                <option value="20:00">20:00 - 21:00</option>
-                                <option value="21:00">21:00 - 22:00</option>
+                                <option value="09:00">09:00 – 10:00</option>
+                                <option value="10:00">10:00 – 11:00</option>
+                                <option value="11:00">11:00 – 12:00</option>
+                                <option value="12:00">12:00 – 13:00</option>
+                                <option value="13:00">13:00 – 14:00</option>
+                                <option value="14:00">14:00 – 15:00</option>
+                                <option value="15:00">15:00 – 16:00</option>
+                                <option value="16:00">16:00 – 17:00</option>
+                                <option value="17:00">17:00 – 18:00</option>
+                                <option value="18:00">18:00 – 19:00</option>
+                                <option value="19:00">19:00 – 20:00</option>
+                                <option value="20:00">20:00 – 21:00</option>
+                                <option value="21:00">21:00 – 22:00</option>
                             </select>
                         </div>
                     </div>
@@ -194,11 +192,10 @@
                     <button class="btn btn-primary btn-xl text-uppercase" type="submit">
                         Réserver
                     </button>
-                    <div id="reservationMessage" class="invalid-feedback d-none text-center" style="display:block;">
-                        Réservation effectuée avec succès.
-                    </div>
+                    <div id="reservationMessage" style="display:none;"></div>
                 </div>
             </form>
+
         </div>
     </section>
 
@@ -219,31 +216,12 @@
         </div>
     </footer>
 
-    <script>
-    fetch("../navbar.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("navbar-placeholder").innerHTML = data);
-    </script>
-
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/scripts.js"></script>
 
-    <script>
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        this.classList.add("was-validated");
+    <script src="../js/include-navbar.js"></script>
 
-        if (this.checkValidity()) {
-            const msg = document.getElementById("reservationMessage");
-            msg.classList.remove("d-none");
-            msg.classList.remove("invalid-feedback");
-            msg.classList.add("valid-feedback");
-            msg.textContent = "Réservation effectuée avec succès !";
-            this.reset();
-        }
-    });
-    </script>
+    <script src="../js/reservation.js"></script>
 
 </body>
-
 </html>

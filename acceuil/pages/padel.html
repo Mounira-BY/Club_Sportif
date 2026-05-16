@@ -7,7 +7,6 @@
     <meta name="description" content="Terrains de Padel du Club Sportif" />
     <meta name="author" content="Club Sportif" />
     <title>Padel - Club Sportif</title>
-    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <link href="../css/monserrat.css" rel="stylesheet" type="text/css" />
     <link href="../css/robottoslab.css" rel="stylesheet" type="text/css" />
@@ -15,11 +14,9 @@
     <link href="../css/padel.css" rel="stylesheet" />
     <link href="../css/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" />
     <script src="../js/all.js" crossorigin="anonymous"></script>
-
 </head>
 
-<body id="page-top">
-
+<body id="page-top" data-sport="padel">
 
     <div id="navbar-placeholder"></div>
 
@@ -77,7 +74,6 @@
                         <h4>Padel 2</h4>
                         <p class="text-muted">Intérieur</p>
                         <a class="btn btn-primary btn-m text-uppercase" href="#reservation">Réserver</a>
-
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -88,14 +84,13 @@
                         <h4>Padel 3</h4>
                         <p class="text-muted">Extérieur</p>
                         <a class="btn btn-primary btn-m text-uppercase" href="#reservation">Réserver</a>
-
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
                     <p class="large text-muted">
-                        Nos terrains de padel sont conçus pour offrir la meilleure expérience de jeu, combinant des surfaces de haute qualité, 
+                        Nos terrains de padel sont conçus pour offrir la meilleure expérience de jeu, combinant des surfaces de haute qualité,
                         un excellent éclairage et un environnement confortable pour les joueurs de tous niveaux.
                     </p>
                 </div>
@@ -112,14 +107,10 @@
                 <div class="col-6 about-section">
                     <h3>Terrain de Padel 1</h3>
                     <h4>extérieur</h4>
-                    <p>Terrain de padel extérieur avec gazon synthétique vert, offrant une excellente visibilité et un confort de jeu optimal.
-                        Idéal pour les matchs en plein air, il offre un environnement naturel et un rebond de balle constant pour
-                        tous les niveaux de compétence.
-                    </p>
+                    <p>Terrain de padel extérieur avec gazon synthétique vert, offrant une excellente visibilité et un confort de jeu optimal.</p>
                     <a class="btn btn-primary btn-m text-uppercase" href="#reservation">Réserver</a>
                 </div>
             </div>
-
             <div class="row" id="padel2-section">
                 <div class="col-6">
                     <img src="../assets/img/padel/padel2.png" alt="..." class="responsive" />
@@ -127,13 +118,10 @@
                 <div class="col-6 about-section">
                     <h3>Terrain de Padel 2</h3>
                     <h4>intérieur</h4>
-                    <p>Terrain de padel intérieur avec surface rouge, conçu pour jouer toute l'année quelles que soient les conditions météorologiques.
-                        Son éclairage uniforme et sa surface dynamique garantissent des échanges rapides et une expérience de jeu professionnelle.
-                    </p>
+                    <p>Terrain de padel intérieur avec surface rouge, conçu pour jouer toute l'année quelles que soient les conditions météorologiques.</p>
                     <a class="btn btn-primary btn-m text-uppercase" href="#reservation">Réserver</a>
                 </div>
             </div>
-
             <div class="row" id="padel3-section">
                 <div class="col-6">
                     <img src="../assets/img/padel/padel3.png" alt="..." class="responsive" />
@@ -141,34 +129,36 @@
                 <div class="col-6 about-section">
                     <h3>Terrain de Padel 3</h3>
                     <h4>extérieur</h4>
-                    <p>Terrain de padel extérieur avec surface bleue moderne, offrant un excellent contraste visuel et un confort de jeu.
-                        Parfait pour les matchs intenses en plein air, il combine performance, sécurité et plaisir.
-                    </p>
+                    <p>Terrain de padel extérieur avec surface bleue moderne, offrant un excellent contraste visuel et un confort de jeu.</p>
                     <a class="btn btn-primary btn-m text-uppercase" href="#reservation">Réserver</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Réservation-->
+
     <section class="page-section" id="reservation">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Réservation</h2>
                 <h3 class="section-subheading text-muted">Réservez votre terrain de padel</h3>
             </div>
-            <form id="contactForm">
+
+            <form id="contactForm" novalidate>
                 <div class="row align-items-stretch mb-5">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input class="form-control" id="name" type="text" placeholder="Votre Nom *" required />
+                            <input class="form-control" id="name" type="text"
+                                   placeholder="Votre Nom *" required />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" id="email" type="email" placeholder="Votre Email *" required />
+                            <input class="form-control" id="email" type="email"
+                                   placeholder="Votre Email *" required />
                         </div>
                         <div class="form-group mb-md-0">
-                            <input class="form-control" id="phone" type="tel" placeholder="Votre Téléphone *"
-                                required />
+                            <input class="form-control" id="phone" type="tel"
+                                   placeholder="Votre Téléphone *" required
+                                   pattern="[0-9+\s\-]{8,15}" />
                         </div>
                     </div>
 
@@ -176,9 +166,9 @@
                         <div class="form-group">
                             <select class="form-control" id="padel-court" required>
                                 <option value="" disabled selected>Sélectionnez votre terrain *</option>
-                                <option value="padel1">Padel 1 - Extérieur</option>
-                                <option value="padel2">Padel 2 - Intérieur</option>
-                                <option value="padel3">Padel 3 - Extérieur</option>
+                                <option value="padel1">Padel 1 – Extérieur</option>
+                                <option value="padel2">Padel 2 – Intérieur</option>
+                                <option value="padel3">Padel 3 – Extérieur</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -187,19 +177,19 @@
                         <div class="form-group mb-md-0">
                             <select class="form-control" id="reservation-time" required>
                                 <option value="" disabled selected>Sélectionnez un créneau horaire *</option>
-                                <option value="09:00">09:00 - 10:00</option>
-                                <option value="10:00">10:00 - 11:00</option>
-                                <option value="11:00">11:00 - 12:00</option>
-                                <option value="12:00">12:00 - 13:00</option>
-                                <option value="13:00">13:00 - 14:00</option>
-                                <option value="14:00">14:00 - 15:00</option>
-                                <option value="15:00">15:00 - 16:00</option>
-                                <option value="16:00">16:00 - 17:00</option>
-                                <option value="17:00">17:00 - 18:00</option>
-                                <option value="18:00">18:00 - 19:00</option>
-                                <option value="19:00">19:00 - 20:00</option>
-                                <option value="20:00">20:00 - 21:00</option>
-                                <option value="21:00">21:00 - 22:00</option>
+                                <option value="09:00">09:00 – 10:00</option>
+                                <option value="10:00">10:00 – 11:00</option>
+                                <option value="11:00">11:00 – 12:00</option>
+                                <option value="12:00">12:00 – 13:00</option>
+                                <option value="13:00">13:00 – 14:00</option>
+                                <option value="14:00">14:00 – 15:00</option>
+                                <option value="15:00">15:00 – 16:00</option>
+                                <option value="16:00">16:00 – 17:00</option>
+                                <option value="17:00">17:00 – 18:00</option>
+                                <option value="18:00">18:00 – 19:00</option>
+                                <option value="19:00">19:00 – 20:00</option>
+                                <option value="20:00">20:00 – 21:00</option>
+                                <option value="21:00">21:00 – 22:00</option>
                             </select>
                         </div>
                     </div>
@@ -209,12 +199,12 @@
                     <button class="btn btn-primary btn-xl text-uppercase" type="submit">
                         Réserver
                     </button>
-                    <div id="reservationMessage" class="invalid-feedback d-none text-center" style="display:block;">
-                        Réservation effectuée avec succès.
-                    </div>
-
+                    <div id="reservationMessage" style="display:none;"></div>
                 </div>
             </form>
+
+        
+
         </div>
     </section>
 
@@ -223,12 +213,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-4 text-lg-start">Copyright &copy; Club Sportif 2023</div>
                 <div class="col-lg-4 my-3 my-lg-0">
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i
-                            class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i
-                            class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i
-                            class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <a class="link-dark text-decoration-none me-3" href="#!">Politique de confidentialité</a>
@@ -241,36 +228,10 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/scripts.js"></script>
     <script src="../js/startbootstrap.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-    fetch("../navbar.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("navbar-placeholder").innerHTML = data);
-    </script>
 
+    <script src="../js/include-navbar.js"></script>
 
-    <!-- Script de validation de réservation -->
-    <script>
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        // Active l'interface de validation Bootstrap
-        this.classList.add("was-validated");
-
-        if (this.checkValidity()) {
-            const msg = document.getElementById("reservationMessage");
-
-            msg.classList.remove("d-none");
-            msg.classList.remove("invalid-feedback");
-            msg.classList.add("valid-feedback");
-
-            msg.textContent = "Réservation effectuée avec succès !";
-            this.reset();
-        }
-    });
-    </script>
+    <script src="../js/reservation.js"></script>
 
 </body>
-
 </html>

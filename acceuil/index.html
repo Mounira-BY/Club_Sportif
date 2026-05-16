@@ -25,36 +25,10 @@
         <div class="container">
             <div class="masthead-subheading">Bienvenue au Fitness Center</div>
             <div class="masthead-heading text-uppercase">Votre destination sport et bien-être</div>
+            <p class="text-white mb-4">Rejoignez une communauté qui partage vos valeurs et votre passion pour le sport.</p>
             <a class="btn btn-primary btn-xl text-uppercase" href="#services">Découvrir nos services</a>
         </div>
     </header>
-
-    <!-- About-->
-    <section class="page-section" id="about">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">À Propos</h2>
-                <h3 class="section-subheading text-muted">Plus qu'une salle de sport, un véritable art de vivre</h3>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <img src="assets/img/about/about2.jpg" alt="Club Sportif" class="responsive" />
-                </div>
-                <div class="col-6 about-section">
-                    <h3>Plus qu'un simple entraînement</h3>
-                    <h4>Notre Histoire</h4>
-                    <p>Depuis plus de 10 ans, notre club sportif s'engage à offrir une expérience unique alliant performance sportive et bien-être. 
-                        Nous croyons que le sport est bien plus qu'une simple activité physique : c'est un mode de vie qui transforme le corps et l'esprit.
-                    </p>
-                    <p>Avec nos installations de pointe, notre équipe de professionnels passionnés et notre atmosphère conviviale, 
-                        nous créons un environnement où chacun peut atteindre ses objectifs, que vous soyez débutant ou athlète confirmé.
-                        Rejoignez une communauté qui partage vos valeurs et votre passion pour le sport.
-                    </p>
-                    <a class="btn btn-primary btn-m text-uppercase" href="#services">Découvrir nos services</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Services Section -->
     <section class="page-section" id="services">
@@ -282,7 +256,7 @@
     </footer>
 
     <script>
-        fetch("navbar.html")
+        fetch("/navbar.html")
             .then(res => {
                 if (!res.ok) throw new Error('Failed to load navbar');
                 return res.text();
@@ -306,6 +280,7 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/startbootstrap.js"></script>
+    <script src="js/include-navbar.js"></script> 
 
     <script>
         // Form validation

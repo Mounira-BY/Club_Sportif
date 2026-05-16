@@ -1,0 +1,140 @@
+section#abonnement-form-section {
+    background-color: #212529;
+    background-repeat: no-repeat;
+    background-position: center;
+    background: linear-gradient(0deg, #00000082, #00000057),
+                url(../assets/img/pricing/header.jpg);
+    background-attachment: scroll;
+    padding: 6rem 0;
+}
+
+section#abonnement-form-section .section-heading {
+    color: #fff;
+}
+
+section#abonnement-form-section .section-subheading {
+    color: rgba(255, 255, 255, 0.80);
+}
+
+section#abonnement-form-section form#aboForm .form-group {
+    margin-bottom: 1.5rem;
+}
+
+section#abonnement-form-section form#aboForm .form-group input,
+section#abonnement-form-section form#aboForm .form-group select {
+    padding: 1.25rem;
+}
+
+section#abonnement-form-section form#aboForm .form-group input.form-control,
+section#abonnement-form-section form#aboForm .form-group select.form-control {
+    height: auto;
+}
+
+section#abonnement-form-section form#aboForm .form-control:focus {
+    border-color: #ffc800;
+    box-shadow: none;
+}
+
+section#abonnement-form-section form#aboForm ::-webkit-input-placeholder {
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    color: #ced4da;
+}
+section#abonnement-form-section form#aboForm :-ms-input-placeholder {
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    color: #ced4da;
+}
+section#abonnement-form-section form#aboForm ::placeholder {
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    color: #ced4da;
+}
+
+section#abonnement-form-section form#aboForm select.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ced4da' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+section#abonnement-form-section form#aboForm select.form-control:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffc800' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+section#abonnement-form-section form#aboForm input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+section#abonnement-form-section form#aboForm input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+section#abonnement-form-section form#aboForm select.form-control option {
+    background-color: #212529;
+    color: #fff;
+}
+
+section#abonnement-form-section #abo-price-preview {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 200, 0, 0.4);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-top: 0.5rem;
+    color: #fff;
+}
+
+section#abonnement-form-section .abo-preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+section#abonnement-form-section .abo-preview-row:last-child {
+    border-bottom: none;
+}
+
+section#abonnement-form-section .abo-preview-prix {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffc800;
+    border-top: 2px solid rgba(255, 200, 0, 0.35);
+    margin-top: 0.4rem;
+    padding-top: 0.6rem;
+}
+
+section#abonnement-form-section .abo-field-indicator {
+    color: #fff; 
+}
+
+section#abonnement-form-section #abo-confirm-card .abo-confirm-inner {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+section#abonnement-form-section .btn-primary.btn-xl {
+    background-color: #ffc800;
+    border-color: #ffc800;
+    color: #212529;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+section#abonnement-form-section .btn-primary.btn-xl:hover {
+    background-color: #d9aa00;
+    border-color: #d9aa00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 200, 0, 0.45);
+}
