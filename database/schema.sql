@@ -47,3 +47,14 @@ CREATE TABLE reservations (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (membre_id) REFERENCES membres(id) ON DELETE SET NULL
 );
+
+CREATE TABLE catalogue_abonnements (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    categorie   VARCHAR(50) NOT NULL,
+    nom         VARCHAR(100) NOT NULL,
+    prix        DECIMAL(10,2) NOT NULL,
+    duree       VARCHAR(20) NOT NULL,
+    description TEXT,
+    pack10      DECIMAL(10,2),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

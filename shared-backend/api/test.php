@@ -14,7 +14,7 @@ try {
     $pdo = new PDO(
         "mysql:host=localhost;dbname=club_sportif;charset=utf8mb4",
         "root",
-        "",
+        "admin",
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
     $result["step3_db"] = "✅ MySQL connected";

@@ -226,7 +226,7 @@ function initAboForm() {
       const res = await fetch(ABONNEMENT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nom, email, telephone, categorie, duree, date_debut: dateDebut }),
+        body: JSON.stringify({ nom, email, telephone, categorie, duree, date_debut: dateDebut, montant: prix ?? 0 }),
       });
       const json = await res.json();
 
